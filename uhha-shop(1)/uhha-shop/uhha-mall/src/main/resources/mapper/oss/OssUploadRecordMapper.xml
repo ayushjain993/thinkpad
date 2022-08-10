@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.oss.mapper.OssUploadRecordMapper">
+    
+    <resultMap type="OssUploadRecord" id="OssUploadRecordResult">
+        <result property="id"    column="id"    />
+        <result property="vendor"    column="vendor"    />
+        <result property="referer"    column="referer"    />
+        <result property="type"    column="type"    />
+        <result property="extUrl"    column="ext_url"    />
+        <result property="objectid"    column="objectId"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="deleteTime"    column="delete_time"    />
+    </resultMap>
+
+    <sql id="selectOssUploadRecordVo">
+        select id, vendor, referer, type, ext_url, objectId, create_by, create_time, del_by, delete_time from oss_upload_record
+    </sql>
+
+    <select id="selectOssUploadRecordList" parameterType="OssUploadRecord" resultMap="OssUploadRecordResult">
+        <include refid="selectOssUploadRecordVo"/>
+        <where>  
+            <if test="vendor != null  and vendor != ''"> and vendor = #{vendor}</if>
+            <if test="referer != null  and referer != ''"> and referer = #{referer}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="extUrl != null  and extUrl != ''"> and ext_url = #{extUrl}</if>
+            <if test="objectid != null "> and objectId = #{objectid}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="deleteTime != null "> and delete_time = #{deleteTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOssUploadRecordById" parameterType="String" resultMap="OssUploadRecordResult">
+        <include refid="selectOssUploadRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOssUploadRecord" parameterType="OssUploadRecord">
+        insert into oss_upload_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="vendor != null">vendor,</if>
+            <if test="referer != null">referer,</if>
+            <if test="type != null">type,</if>
+            <if test="extUrl != null">ext_url,</if>
+            <if test="objectid != null">objectId,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="deleteTime != null">delete_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="vendor != null">#{vendor},</if>
+            <if test="referer != null">#{referer},</if>
+            <if test="type != null">#{type},</if>
+            <if test="extUrl != null">#{extUrl},</if>
+            <if test="objectid != null">#{objectid},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="deleteTime != null">#{deleteTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOssUploadRecord" parameterType="OssUploadRecord">
+        update oss_upload_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vendor != null">vendor = #{vendor},</if>
+            <if test="referer != null">referer = #{referer},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="extUrl != null">ext_url = #{extUrl},</if>
+            <if test="objectid != null">objectId = #{objectid},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOssUploadRecordById" parameterType="String">
+        delete from oss_upload_record where id = #{id}
+    </delete>
+
+    <delete id="deleteOssUploadRecordByIds" parameterType="String">
+        delete from oss_upload_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.uhha.coin.admin.mapper.FCoinBalanceMapper" >
+
+  <insert id="insert" parameterType="FCoinBalance" keyProperty="fid" >
+    insert into f_coin_balance (
+    fid,
+    fdate,
+    fcoinid,
+    fbalance,
+    fcreatedate,
+    fremark,
+    version
+    ) values (
+    #{fid,jdbcType=INTEGER},
+    #{fdate,jdbcType=TIMESTAMP},
+    #{fcoinid,jdbcType=INTEGER},
+    #{fbalance,jdbcType=DECIMAL},
+    #{fcreatedate,jdbcType=TIMESTAMP},
+    #{fremark,jdbcType=VARCHAR},
+    #{version,jdbcType=INTEGER})
+  </insert>
+</mapper>

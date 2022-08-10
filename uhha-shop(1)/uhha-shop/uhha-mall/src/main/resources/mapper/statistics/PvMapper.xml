@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.statistics.mapper.PvMapper">
+
+    <resultMap type="io.uhha.statistics.bean.Pv" id="PvResult">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="module" column="module"/>
+        <result property="browser" column="browser"/>
+        <result property="referer" column="referer"/>
+        <result property="os" column="os"/>
+        <result property="pageId" column="page_id"/>
+        <result property="url" column="url"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="timeZone" column="time_zone"/>
+        <result property="ip" column="ip"/>
+        <result property="location" column="location"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap type="io.uhha.statistics.bean.PvuvStatistics" id="PvuvStatisticsResult">
+        <result property="pv" column="pv"/>
+        <result property="uv" column="uv"/>
+        <result property="createTime" column="createTime"/>
+    </resultMap>
+
+    <sql id="selectPvVo">
+        select id, uid, module, browser, referer, os, page_id, url, device_type, time_zone, ip, location, create_time from pv
+    </sql>
+
+    <select id="selectPvList" parameterType="io.uhha.statistics.bean.Pv" resultMap="PvResult">
+        <include refid="selectPvVo"/>
+            order by create_time desc
+    </select>
+
+    <select id="selectPvUvStatistics" parameterType="io.uhha.statistics.bean.PvuvStatistics" resultMap="PvuvStatisticsResult">
+        select count( distinct  uid) as uv, count(1) as pv, date(create_time) as createTime from pv
+        <where>
+        <if test="startTime != null and startTime != ''"><!-- 开始时间检索 -->
+            AND date_format(create_time,'%y-%m-%d') &gt;= date_format(#{startTime},'%y-%m-%d')
+        </if>
+        <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(create_time,'%y-%m-%d') &lt;= date_format(#{endTime},'%y-%m-%d')
+        </if>
+        </where>
+        group by DATE(create_time) order by create_time
+    </select>
+
+
+
+    <select id="selectPvById" parameterType="Long" resultMap="PvResult">
+        <include refid="selectPvVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPv" parameterType="io.uhha.statistics.bean.Pv" useGeneratedKeys="true" keyProperty="id">
+        insert into pv
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="module != null">module,</if>
+            <if test="browser != null">browser,</if>
+            <if test="referer != null">referer,</if>
+            <if test="os != null">os,</if>
+            <if test="pageId != null">page_id,</if>
+            <if test="url != null">url,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="timeZone != null">time_zone,</if>
+            <if test="ip != null">ip,</if>
+            <if test="location != null">location,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="module != null">#{module},</if>
+            <if test="browser != null">#{browser},</if>
+            <if test="referer != null">#{referer},</if>
+            <if test="os != null">#{os},</if>
+            <if test="pageId != null">#{pageId},</if>
+            <if test="url != null">#{url},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="timeZone != null">#{timeZone},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="location != null">#{location},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePv" parameterType="io.uhha.statistics.bean.Pv">
+        update pv
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="module != null">module = #{module},</if>
+            <if test="browser != null">browser = #{browser},</if>
+            <if test="referer != null">referer = #{referer},</if>
+            <if test="os != null">os = #{os},</if>
+            <if test="pageId != null">page_id = #{pageId},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="timeZone != null">time_zone = #{timeZone},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="isPvuvRecorded" parameterType="io.uhha.statistics.bean.Pv" resultType="java.lang.Integer">
+        select count(1) from pv
+        <where>
+            <if test="ip != null  and ip !=''">
+                ip = #{ip}
+            </if>
+            <if test="uid != '0'">
+                AND uid = #{uid}
+            </if>
+            and date_format(create_time,'%y-%m-%d') = date_format(#{createTime},'%y-%m-%d')
+
+        </where>
+    </select>
+
+    <delete id="deletePvById" parameterType="Long">
+        delete from pv where id = #{id}
+    </delete>
+
+    <delete id="deletePvByIds" parameterType="String">
+        delete from pv where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

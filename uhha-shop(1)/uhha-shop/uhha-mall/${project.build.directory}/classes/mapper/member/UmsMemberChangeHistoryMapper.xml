@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.member.mapper.UmsMemberChangeHistoryMapper">
+
+    <resultMap type="UmsMemberChangeHistory" id="UmsMemberChangeHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="eventName"    column="event_name"    />
+        <result property="eventContent"    column="event_content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+    </resultMap>
+
+    <sql id="selectUmsMemberChangeHistoryVo">
+        select id, mobile, event_name, event_content, create_time, create_by from ums_member_change_history
+    </sql>
+
+    <select id="selectUmsMemberChangeHistoryList" parameterType="String" resultMap="UmsMemberChangeHistoryResult">
+        <include refid="selectUmsMemberChangeHistoryVo"/>
+        <where>
+            <if test="mobile != null "> and mobile = #{mobile}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <insert id="insertUmsMemberChangeHistory" parameterType="UmsMemberChangeHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into ums_member_change_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mobile != null">mobile,</if>
+            <if test="eventName != null and eventName != ''">event_name,</if>
+            <if test="eventContent != null and eventContent != ''">event_content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mobile != null">#{mobile},</if>
+            <if test="eventName != null and eventName != ''">#{eventName},</if>
+            <if test="eventContent != null and eventContent != ''">#{eventContent},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+        </trim>
+    </insert>
+
+</mapper>

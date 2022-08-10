@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.shortvideo.mapper.ShortVideoMapper">
+    
+    <resultMap type="ShortVideo" id="ShortVideoResult">
+        <result property="uid"    column="uid"    />
+        <result property="spuId"    column="spu_id"    />
+        <result property="videoId"    column="video_id"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="frontImageUrl"    column="front_image_url"    />
+        <result property="status"    column="status"    />
+        <result property="videoFileName"    column="video_file_name"    />
+        <result property="hours"    column="hours"    />
+        <result property="minutes"    column="minutes"    />
+        <result property="seconds"    column="seconds"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="location"    column="location"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="frontPage"    column="front_page"    />
+        <result property="topicList"    column="topic_list"    />
+        <result property="productList"    column="product_list"    />
+        <result property="havingProduct"    column="having_product"    />
+        <result property="pv"    column="pv"    />
+        <result property="likedqty"    column="likedQty"    />
+        <result property="collectedqty"    column="collectedQty"    />
+        <result property="repliedqty"    column="repliedQty"    />
+    </resultMap>
+
+    <resultMap type="io.uhha.shortvideo.vo.ShortVideoVo" id="ShortVideoFullResult">
+        <result property="uid"    column="uid"    />
+        <result property="spuId"    column="spu_id"    />
+        <result property="videoId"    column="video_id"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="frontImageUrl"    column="front_image_url"    />
+        <result property="status"    column="status"    />
+        <result property="videoFileName"    column="video_file_name"    />
+        <result property="hours"    column="hours"    />
+        <result property="minutes"    column="minutes"    />
+        <result property="seconds"    column="seconds"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="location"    column="location"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="frontPage"    column="front_page"    />
+        <result property="topicList"    column="topic_list"    />
+        <result property="productList"    column="product_list"    />
+        <result property="havingProduct"    column="having_product"    />
+        <result property="pv"    column="pv"    />
+        <result property="likedqty"    column="likedQty"    />
+        <result property="collectedqty"    column="collectedQty"    />
+        <result property="repliedqty"    column="repliedQty"    />
+        <result property="avatarUrl"    column="avatar_url"    />
+        <result property="username"    column="username"    />
+        <result property="nickname"    column="nickname"    />
+    </resultMap>
+
+    <sql id="selectShortVideoVo">
+        select uid, spu_id, video_id, video_url, front_image_url, status, video_file_name, hours, minutes, seconds, create_time, create_by, location, latitude, longitude, title, content, front_page, topic_list, product_list, having_product, pv, likedQty, collectedQty, repliedQty from short_video
+    </sql>
+
+    <select id="selectShortVideoList" parameterType="ShortVideo" resultMap="ShortVideoResult">
+        <include refid="selectShortVideoVo"/>
+        <where>
+            <if test="uid != null  and uid != ''"> and uid = #{uid}</if>
+            <if test="spuId != null  and spuId != ''"> and spu_id = #{spuId}</if>
+            <if test="videoId != null  and videoId != ''"> and video_id = #{videoId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="videoFileName != null  and videoFileName != ''"> and video_file_name = #{videoFileName}</if>
+            <if test="hours != null "> and hours = #{hours}</if>
+            <if test="minutes != null "> and minutes = #{minutes}</if>
+            <if test="seconds != null "> and seconds = #{seconds}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="frontPage != null  and frontPage != ''"> and front_page = #{frontPage}</if>
+            <if test="topicList != null  and topicList != ''"> and topic_list = #{topicList}</if>
+            <if test="productList != null  and productList != ''"> and product_list = #{productList}</if>
+            <if test="havingProduct != null  and havingProduct != ''"> and having_product = #{havingProduct}</if>
+            <if test="pv != null "> and pv = #{pv}</if>
+            <if test="likedqty != null "> and likedQty = #{likedqty}</if>
+            <if test="collectedqty != null "> and collectedQty = #{collectedqty}</if>
+            <if test="repliedqty != null "> and repliedQty = #{repliedqty}</if>
+        </where>
+    </select>
+
+    <select id="getShortVideoById" resultMap="ShortVideoFullResult">
+        select s.uid, s.spu_id, s.video_id, s.video_url, s.front_image_url, s.status, s.video_file_name, s.hours,
+               s.minutes, s.seconds, s.create_time, s.create_by, s.location,
+               s.latitude, s.longitude, s.title, s.content, s.front_page, s.topic_list,
+               s.product_list, s.having_product, s.pv, s.likedQty, s.collectedQty, s.repliedQty,
+               u.image as  avatar_url, u.username, u.nickname, p.name as prodDesc from (short_video s left join ums_member u on u.id= s.uid) left join pms_goods p on p.id = s.spu_id
+        where s.uid = u.id and s.status = 1 and s.video_id=#{videoId};
+    </select>
+
+    <select id="selectRecommendedVideoList" resultMap="ShortVideoFullResult">
+        select s.uid, s.spu_id, s.video_id, s.video_url, s.front_image_url, s.status, s.video_file_name, s.hours,
+               s.minutes, s.seconds, s.create_time, s.create_by, s.location,
+               s.latitude, s.longitude, s.title, s.content, s.front_page, s.topic_list,
+               s.product_list, s.having_product, s.pv, s.likedQty, s.collectedQty, s.repliedQty,
+               u.image as  avatar_url, u.username, u.nickname, p.name as prodDesc from (short_video s left join ums_member u on u.id= s.uid) left join pms_goods p on p.id = s.spu_id
+        where s.uid = u.id and s.status = 1;
+    </select>
+
+    <select id="selectVideoListByUidAndLocation" resultMap="ShortVideoResult">
+        <include refid="selectShortVideoVo"/>
+
+        <where>
+            <if test="uid != null  and uid != ''"> and uid = #{uid}</if>
+            <if test="latitudeSubtract != null">
+                AND latitude &gt; #{latitudeSubtract}
+                AND latitude &lt; #{latitudeAdd} AND longitude &gt; #{longitudeSubtract}
+                AND longitude &lt; #{longitudeAdd}
+            </if>
+            AND status = 1
+        </where>
+
+        ORDER BY
+        ACOS(
+        SIN( ( #{latitude} * 3.1415 ) / 180 ) * SIN( ( latitude * 3.1415 ) / 180 ) + COS( ( #{latitude} * 3.1415 ) /
+        180 ) * COS( ( latitude * 3.1415 ) / 180 ) * COS( ( #{longitude} * 3.1415 ) / 180 - ( longitude * 3.1415 ) /
+        180 )
+        ) * 6380 ASC
+    </select>
+
+
+    <select id="selectVideoListByLocation" resultMap="ShortVideoResult">
+        <include refid="selectShortVideoVo"/>
+
+        <where>
+            <if test="latitudeSubtract != null">
+                AND latitude &gt; #{latitudeSubtract}
+                AND latitude &lt; #{latitudeAdd} AND longitude &gt; #{longitudeSubtract}
+                AND longitude &lt; #{longitudeAdd}
+            </if>
+            AND status = 1
+        </where>
+
+        ORDER BY
+        ACOS(
+        SIN( ( #{latitude} * 3.1415 ) / 180 ) * SIN( ( latitude * 3.1415 ) / 180 ) + COS( ( #{latitude} * 3.1415 ) /
+        180 ) * COS( ( latitude * 3.1415 ) / 180 ) * COS( ( #{longitude} * 3.1415 ) / 180 - ( longitude * 3.1415 ) /
+        180 )
+        ) * 6380 ASC
+    </select>
+
+    <select id="selectShortVideoByUid" parameterType="Long" resultMap="ShortVideoFullResult">
+        select s.uid, s.spu_id, s.video_id, s.video_url, s.front_image_url, s.status, s.video_file_name, s.hours,
+        s.minutes, s.seconds, s.create_time, s.create_by, s.location,
+        s.latitude, s.longitude, s.title, s.content, s.front_page, s.topic_list,
+        s.product_list, s.having_product, s.pv, s.likedQty, s.collectedQty, s.repliedQty,
+        u.image as  avatar_url, u.username, u.nickname, p.name as prodDesc from (short_video s left join ums_member u on u.id= s.uid) left join pms_goods p on p.id = s.spu_id
+        where s.uid = #{uid} and s.status = 1;
+    </select>
+
+    <select id="getFollowedVideoListByUID" parameterType="Long" resultMap="ShortVideoResult">
+        select s.uid, s.spu_id, s.video_id, s.video_url, s.front_image_url, s.status, s.video_file_name, s.hours, s.minutes,
+               s.seconds, s.create_time, s.create_by, s.location, s.latitude, s.longitude,
+               s.title, s.content, s.front_page, s.topic_list, s.product_list,
+               s.having_product, s.pv, s.likedQty, s.collectedQty, s.repliedQty from short_video s
+        where s.uid in (select u.followed_uid from ums_member_attention u where u.uid =#{uid}) AND s.status = 1 order by s.likedQty desc
+    </select>
+
+    <select id="getLikedVideoListByUID" parameterType="Long" resultMap="ShortVideoFullResult">
+
+        select s.uid, s.spu_id, s.video_id, s.video_url, s.front_image_url, s.status, s.video_file_name, s.hours, s.minutes,
+               s.seconds, s.create_time, s.create_by, s.location, s.latitude, s.longitude,
+               s.title, s.content, s.front_page, s.topic_list, s.product_list,
+               s.having_product, s.pv, s.likedQty, s.collectedQty, s.repliedQty,
+               u.image as  avatar_url, u.username, u.nickname, p.name as prodDesc from (short_video s left join ums_member u on u.id= s.uid) left join pms_goods p on p.id = s.spu_id
+        where s.video_id in (select l.resource_id from ums_member_likes l where l.uid = #{uid} and l.type = 0) and s.status = 1
+    </select>
+
+
+
+    <select id="selectShortVideoByVideoId" parameterType="String" resultMap="ShortVideoResult">
+        <include refid="selectShortVideoVo"/>
+        where video_id = #{videoId} AND status = 1
+    </select>
+
+
+    <insert id="insertShortVideo" parameterType="ShortVideo">
+        insert into short_video
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null and uid != ''">uid,</if>
+            <if test="spuId != null and spuId != ''">spu_id,</if>
+            <if test="videoUrl != null">video_url,</if>
+            <if test="frontImageUrl != null">front_image_url,</if>
+            <if test="status != null">status,</if>
+            <if test="videoFileName != null">video_file_name,</if>
+            <if test="hours != null">hours,</if>
+            <if test="minutes != null">minutes,</if>
+            <if test="seconds != null">seconds,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="location != null">location,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="frontPage != null">front_page,</if>
+            <if test="topicList != null">topic_list,</if>
+            <if test="productList != null">product_list,</if>
+            <if test="havingProduct != null">having_product,</if>
+            <if test="pv != null">pv,</if>
+            <if test="likedqty != null">likedQty,</if>
+            <if test="collectedqty != null">collectedQty,</if>
+            <if test="repliedqty != null">repliedQty,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="spuId != null">#{spuId},</if>
+            <if test="videoUrl != null">#{videoUrl},</if>
+            <if test="frontImageUrl != null">#{frontImageUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="videoFileName != null">#{videoFileName},</if>
+            <if test="hours != null">#{hours},</if>
+            <if test="minutes != null">#{minutes},</if>
+            <if test="seconds != null">#{seconds},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="location != null">#{location},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="frontPage != null">#{frontPage},</if>
+            <if test="topicList != null">#{topicList},</if>
+            <if test="productList != null">#{productList},</if>
+            <if test="havingProduct != null">#{havingProduct},</if>
+            <if test="pv != null">#{pv},</if>
+            <if test="likedqty != null">#{likedqty},</if>
+            <if test="collectedqty != null">#{collectedqty},</if>
+            <if test="repliedqty != null">#{repliedqty},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShortVideo" parameterType="ShortVideo">
+        update short_video
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null and uid != ''">uid = #{uid},</if>
+            <if test="spuId != null and spuId != ''">spu_id = #{spuId},</if>
+            <if test="videoUrl != null">video_url = #{videoUrl},</if>
+            <if test="frontImageUrl != null">front_image_url = #{frontImageUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="videoFileName != null">video_file_name = #{videoFileName},</if>
+            <if test="hours != null">hours = #{hours},</if>
+            <if test="minutes != null">minutes = #{minutes},</if>
+            <if test="seconds != null">seconds = #{seconds},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="frontPage != null">front_page = #{frontPage},</if>
+            <if test="topicList != null">topic_list = #{topicList},</if>
+            <if test="productList != null">product_list = #{productList},</if>
+            <if test="havingProduct != null">having_product = #{havingProduct},</if>
+            <if test="pv != null">pv = #{pv},</if>
+            <if test="likedqty != null">likedQty = #{likedqty},</if>
+            <if test="collectedqty != null">collectedQty = #{collectedqty},</if>
+            <if test="repliedqty != null">repliedQty = #{repliedqty},</if>
+        </trim>
+        where video_id = #{videoId}
+    </update>
+
+    <update id="rejectVideoApply" parameterType="String">
+        update short_video set status = 2
+        where video_id = #{videoId}
+    </update>
+
+    <update id="passVideoApply" parameterType="String">
+        update short_video set status = 1
+        where video_id = #{videoId}
+    </update>
+
+    <delete id="deleteShortVideoById" parameterType="String">
+        delete from short_video where video_id = #{videoId}
+    </delete>
+
+    <delete id="deleteShortVideoByIds" parameterType="String">
+        delete from short_video where video_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

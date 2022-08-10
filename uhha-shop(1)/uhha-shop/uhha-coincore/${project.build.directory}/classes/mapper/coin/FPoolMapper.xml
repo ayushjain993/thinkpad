@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.uhha.coin.capital.mapper.FPoolMapper" >
+
+  <resultMap id="BaseResultMap" type="FPool" >
+    <id column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="fcoinid" property="fcoinid" jdbcType="INTEGER" />
+    <result column="faddress" property="faddress" jdbcType="VARCHAR" />
+    <result column="fstatus" property="fstatus" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+
+    <resultMap id="SystemCoinTypeVOResultMap" type="io.uhha.coin.system.domain.SystemCoinTypeVO" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="short_name" property="shortname"  />
+        <result column="web_logo" property="weblogo"  />
+        <result column="app_logo" property="applogo"  />
+        <result column="coin_introduce" property="coinIntroduce"  />
+        <result column="coin_advantage" property="coinAdvantage"  />
+        <result column="symbol" property="symbol"  />
+        <result column="is_withdraw" property="isWithdraw"/>
+        <result column="is_recharge" property="isRecharge" />
+        <result column="coin_type" property="coinType"  />
+        <result column="status" property="status"  />
+        <result column="network_fee" property="networkFee"  />
+        <result column="used" property="used"  />
+        <result column="notused" property="notused"  />
+
+    </resultMap>
+  
+  <sql id="poolColumn">
+      fid, fcoinid, faddress, fstatus, version
+  </sql>
+
+  <select id="getVirtualCoinAddressNumList" resultType="java.util.Map" parameterType="java.util.Map">
+    select coin.name as name, ifnull(count(pool.fid),0) as num
+	from f_pool as pool INNER JOIN system_coin_type as coin on pool.fcoinid = coin.id  where 1 = 1
+    <if test="keyword != null">
+      and  (coin.name like concat('%',#{keyword,jdbcType=VARCHAR},'%') or coin.short_name like concat('%',#{keyword,jdbcType=VARCHAR},'%') )
+    </if>
+    and (pool.fstatus=0 or pool.fstatus is null)
+	group by pool.fcoinid
+    limit #{offset},#{limit}    
+  </select>
+  
+   <select id="countVirtualCoinAddressNumList" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(tab.name) as count from (
+    	select coin.name as name, count(pool.fid) as num
+		from f_pool as pool INNER JOIN system_coin_type as coin on pool.fcoinid = coin.id  where 1 = 1
+	    <if test="keyword != null">
+	      and  (coin.name like concat('%',#{keyword,jdbcType=VARCHAR},'%') or coin.short_name like concat('%',#{keyword,jdbcType=VARCHAR},'%') )
+	    </if>
+	    and (pool.fstatus=0 or pool.fstatus is null)
+	    group by pool.fcoinid
+    ) as tab
+  </select>
+
+    <select id="countVirtualCoinAddressNum" resultMap="SystemCoinTypeVOResultMap" parameterType="java.lang.Integer">
+        select c.id, c.name, c.type, c.short_name, c.web_logo, c.app_logo, c.coin_introduce, c.coin_advantage, c.symbol, c.is_withdraw,
+               c.is_recharge, c.coin_type, c.status, c.network_fee,
+               count(case  when fstatus=1 then 1 end) as used,
+               count(case  when fstatus=0 then 1 end) as notused
+        from (select * from f_pool where fcoinid=#{fcoinid}) as fp INNER JOIN system_coin_type as c on fp.fcoinid = c.id
+
+    </select>
+
+    <select id="selectOneFpool" resultType="FPool" parameterType="java.lang.Integer" >
+        select <include refid="poolColumn" /> from f_pool where
+        fcoinid = #{fcoinid,jdbcType=INTEGER} and fstatus=0
+        order by fid asc limit 0,1
+    </select>
+
+    <update id="updatePoolStatus" parameterType="FPool" >
+        update f_pool set fstatus = 1, version = version + 1
+        where fid = #{fid,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
+    </update>
+  
+  <insert id="insert" parameterType="FPool" keyProperty="fid">
+    insert into f_pool (
+      fcoinid, 
+      faddress, 
+      fstatus, 
+      version
+    ) values (
+      #{fcoinid,jdbcType=INTEGER}, 
+      #{faddress,jdbcType=VARCHAR}, 
+      #{fstatus,jdbcType=INTEGER}, 
+      #{version,jdbcType=INTEGER})
+  </insert>
+
+</mapper>

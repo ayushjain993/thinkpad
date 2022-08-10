@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.system.mapper.FCountryMapper">
+
+    <resultMap type="FCountry" id="FCountryResult">
+        <result property="id"    column="id"    />
+        <result property="englishName"    column="english_name"    />
+        <result property="chineseName"    column="chinese_name"    />
+        <result property="areacode"    column="areacode"    />
+        <result property="threeCode"    column="three_code"    />
+        <result property="twoCode"    column="two_code"    />
+        <result property="isoCode"    column="iso_code"    />
+        <result property="isEnable"    column="is_enable"    />
+    </resultMap>
+
+    <sql id="selectFCountryVo">
+        select id, english_name, chinese_name, areacode, two_code, three_code, iso_code, is_enable from f_country
+    </sql>
+
+    <select id="selectFCountryList" parameterType="FCountry" resultMap="FCountryResult">
+        <include refid="selectFCountryVo"/>
+        <where>
+            <if test="englishName != null  and englishName != ''"> and english_name like concat('%', #{englishName}, '%')</if>
+            <if test="chineseName != null  and chineseName != ''"> and chinese_name like concat('%', #{chineseName}, '%')</if>
+            <if test="areacode != null  and areacode != ''"> and areacode = #{areacode}</if>
+            <if test="threeCode != null  and threeCode != ''"> and three_code = #{threeCode}</if>
+            <if test="twoCode != null  and twoCode != ''"> and two_code = #{twoCode}</if>
+            <if test="isoCode != null  and isoCode != ''"> and iso_code = #{isoCode}</if>
+            <if test="isEnable != null  and isEnable != ''"> and is_enable = #{isEnable}</if>
+        </where>
+        order by english_name asc
+    </select>
+
+    <select id="selectAllCountries" parameterType="FCountry" resultMap="FCountryResult">
+        <include refid="selectFCountryVo"/>
+        <where>
+            1=1
+            <if test="englishName != null  and englishName != ''"> and english_name like concat('%', #{englishName}, '%')</if>
+            <if test="chineseName != null  and chineseName != ''"> and chinese_name like concat('%', #{chineseName}, '%')</if>
+            <if test="areacode != null  and areacode != ''"> and areacode = #{areacode}</if>
+            and is_enable = 0
+        </where>
+        order by english_name asc
+    </select>
+
+
+    <select id="selectFCountryById" parameterType="Long" resultMap="FCountryResult">
+        <include refid="selectFCountryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFCountry" parameterType="FCountry" useGeneratedKeys="true" keyProperty="id">
+        insert into f_country
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="englishName != null">english_name,</if>
+            <if test="chineseName != null">chinese_name,</if>
+            <if test="areacode != null">areacode,</if>
+            <if test="twoCode != null">two_code,</if>
+            <if test="threeCode != null">three_code,</if>
+            <if test="isoCode != null">iso_code,</if>
+            <if test="isEnable != null">is_enable,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="englishName != null">#{englishName},</if>
+            <if test="chineseName != null">#{chineseName},</if>
+            <if test="areacode != null">#{areacode},</if>
+            <if test="twoCode != null">#{twoCode},</if>
+            <if test="threeCode != null">#{threeCode},</if>
+            <if test="isoCode != null">#{isoCode},</if>
+            <if test="isEnable != null">#{isEnable},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFCountry" parameterType="FCountry">
+        update f_country
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="englishName != null">english_name = #{englishName},</if>
+            <if test="chineseName != null">chinese_name = #{chineseName},</if>
+            <if test="areacode != null">areacode = #{areacode},</if>
+            <if test="twoCode != null">two_code = #{twoCode},</if>
+            <if test="threeCode != null">three_code = #{threeCode},</if>
+            <if test="isoCode != null">iso_code = #{isoCode},</if>
+            <if test="isEnable != null">is_enable = #{isEnable},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFCountryById" parameterType="Long">
+        delete from f_country where id = #{id}
+    </delete>
+
+    <delete id="deleteFCountryByIds" parameterType="String">
+        delete from f_country where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

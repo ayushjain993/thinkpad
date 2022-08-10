@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.shortvideo.mapper.ShortVideoCommentMapper">
+    
+    <resultMap type="ShortVideoComment" id="ShortVideoCommentResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="videoId"    column="video_id"    />
+        <result property="uid"    column="uid"    />
+        <result property="content"    column="content"    />
+        <result property="likedQty"    column="liked_qty"    />
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap type="ShortVideoComment" id="ShortVideoCommentFullResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="videoId"    column="video_id"    />
+        <result property="uid"    column="uid"    />
+        <result property="content"    column="content"    />
+        <result property="likedQty"    column="liked_qty"    />
+        <result property="createTime" column="create_time"/>
+        <result property="avatarUrl"    column="avatar_url"    />
+        <result property="username"    column="username"    />
+        <result property="nickname"    column="nickname"    />
+    </resultMap>
+
+    <sql id="selectShortVideoCommentVo">
+        select id, parent_id, video_id, uid, content, liked_qty, create_time from short_video_comment
+    </sql>
+
+    <sql id="selectShortVideoCommentFullVo">
+        select s.id, s.parent_id, s.video_id, s.uid, s.content, s.liked_qty, s.create_time,
+               u.image as  avatar_url, u.username, u.nickname from short_video_comment s left join ums_member u on u.id= s.uid
+    </sql>
+
+    <select id="selectShortVideoCommentList" parameterType="ShortVideoComment" resultMap="ShortVideoCommentFullResult">
+        <include refid="selectShortVideoCommentFullVo"/>
+        <where>
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+            <if test="videoId != null  and videoId != ''"> and video_id = #{videoId}</if>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="content != null  and content != ''"> and like concat('%', #{content}, '%')</if>
+            <if test="likedQty != null "> and liked_qty = #{likedQty}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectShortVideoCommentById" parameterType="String" resultMap="ShortVideoCommentResult">
+        <include refid="selectShortVideoCommentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertShortVideoComment" parameterType="ShortVideoComment">
+        insert into short_video_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="videoId != null and videoId != ''">video_id,</if>
+            <if test="uid != null">uid,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="likedQty != null">liked_qty,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="videoId != null and videoId != ''">#{videoId},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="likedQty != null">#{likedQty},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShortVideoComment" parameterType="ShortVideoComment">
+        update short_video_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="videoId != null and videoId != ''">video_id = #{videoId},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="likedQty != null">liked_qty = #{likedQty},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShortVideoCommentById" parameterType="String">
+        delete from short_video_comment where id = #{id}
+    </delete>
+
+    <delete id="deleteShortVideoCommentByIds" parameterType="String">
+        delete from short_video_comment where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectShortVideoCommentByVideoId" resultMap="ShortVideoCommentFullResult">
+        <include refid="selectShortVideoCommentFullVo"/>
+        <where>
+            <if test="videoId != null  and videoId != ''"> and video_id = #{videoId}</if>
+        </where>
+        order by liked_qty desc
+    </select>
+
+    <select id="selectShortVideoCommentByVideoIdAndParentId" resultMap="ShortVideoCommentFullResult">
+        <include refid="selectShortVideoCommentFullVo"/>
+        <where>
+            <if test="parentId != null  and parentId != ''"> and parent_id = #{parentId}</if>
+            <if test="videoId != null  and videoId != ''"> and video_id = #{videoId}</if>
+        </where>
+        order by liked_qty desc
+    </select>
+
+</mapper>

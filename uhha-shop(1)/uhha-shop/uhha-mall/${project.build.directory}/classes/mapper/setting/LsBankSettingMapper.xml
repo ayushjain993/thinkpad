@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.setting.mapper.LsBankSettingMapper">
+    
+    <resultMap type="LsBankSetting" id="LsBankSettingResult">
+        <result property="id"    column="id"    />
+        <result property="countryId"    column="country_id"    />
+        <result property="country"    column="country"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="swiftCode"    column="swift_code"    />
+        <result property="status"    column="status"    />
+        <result property="bankAddress"    column="bank_address"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+    </resultMap>
+
+    <sql id="selectLsBankSettingVo">
+        select id, country_id, country, bank_name, swift_code, status, bank_address, create_time, create_by from ls_bank_setting
+    </sql>
+
+    <select id="selectLsBankSettingList" parameterType="LsBankSetting" resultMap="LsBankSettingResult">
+        <include refid="selectLsBankSettingVo"/>
+        <where>  
+            <if test="countryId != null "> and country_id = #{countryId}</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectLsBankSettingById" parameterType="Long" resultMap="LsBankSettingResult">
+        <include refid="selectLsBankSettingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertLsBankSetting" parameterType="LsBankSetting" useGeneratedKeys="true" keyProperty="id">
+        insert into ls_bank_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="countryId != null">country_id,</if>
+            <if test="country != null and country != ''">country,</if>
+            <if test="bankName != null and bankName != ''">bank_name,</if>
+            <if test="swiftCode != null and swiftCode != ''">swift_code,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="bankAddress != null and bankAddress != ''">bank_address,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="countryId != null">#{countryId},</if>
+            <if test="country != null and country != ''">#{country},</if>
+            <if test="bankName != null and bankName != ''">#{bankName},</if>
+            <if test="swiftCode != null and swiftCode != ''">#{swiftCode},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="bankAddress != null and bankAddress != ''">#{bankAddress},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLsBankSetting" parameterType="LsBankSetting">
+        update ls_bank_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="countryId != null">country_id = #{countryId},</if>
+            <if test="country != null and country != ''">country = #{country},</if>
+            <if test="bankName != null and bankName != ''">bank_name = #{bankName},</if>
+            <if test="swiftCode != null and swiftCode != ''">swift_code = #{swiftCode},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="bankAddress != null and bankAddress != ''">bank_address = #{bankAddress},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLsBankSettingById" parameterType="Long">
+        delete from ls_bank_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteLsBankSettingByIds" parameterType="String">
+        delete from ls_bank_setting where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.setting.mapper.LsSkuSourceSettingMapper">
+
+    <resultMap type="LsSkuSourceSetting" id="LsSkuSourceSettingResult">
+        <result property="id" column="id"/>
+        <result property="codetype" column="codeType"/>
+        <result property="columnName" column="column_name"/>
+        <result property="columnValue" column="column_value"/>
+    </resultMap>
+
+    <sql id="selectLsSkuSourceSettingVo">
+        select id, codeType, column_name, column_value from ls_sku_source_setting
+    </sql>
+
+    <select id="selectLsSkuSourceSettingList" parameterType="LsSkuSourceSetting" resultMap="LsSkuSourceSettingResult">
+        <include refid="selectLsSkuSourceSettingVo"/>
+        <where>
+            <if test="codetype != null  and codetype != ''">and codeType = #{codetype}</if>
+            <if test="columnName != null  and columnName != ''">and column_name like concat('%', #{columnName}, '%')
+            </if>
+            <if test="columnValue != null  and columnValue != ''">and column_value = #{columnValue}</if>
+        </where>
+    </select>
+
+    <select id="selectLsSkuSourceSettingById" parameterType="Long" resultMap="LsSkuSourceSettingResult">
+        <include refid="selectLsSkuSourceSettingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLsSkuSourceSetting" parameterType="LsSkuSourceSetting" useGeneratedKeys="true" keyProperty="id">
+        insert into ls_sku_source_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="codetype != null and codetype != ''">codeType,</if>
+            <if test="columnName != null and columnName != ''">column_name,</if>
+            <if test="columnValue != null and columnValue != ''">column_value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="codetype != null and codetype != ''">#{codetype},</if>
+            <if test="columnName != null and columnName != ''">#{columnName},</if>
+            <if test="columnValue != null and columnValue != ''">#{columnValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLsSkuSourceSetting" parameterType="LsSkuSourceSetting">
+        update ls_sku_source_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="codetype != null and codetype != ''">codeType = #{codetype},</if>
+            <if test="columnName != null and columnName != ''">column_name = #{columnName},</if>
+            <if test="columnValue != null and columnValue != ''">column_value = #{columnValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLsSkuSourceSettingById" parameterType="Long">
+        delete from ls_sku_source_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteLsSkuSourceSettingByIds" parameterType="String">
+        delete from ls_sku_source_setting where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <resultMap id="BaseResult" type="io.uhha.setting.bean.SkuSourceSetting">
+        <result column="id" property="id"/>
+        <result column="codeType" property="codeType"/>
+        <result column="column_name" property="columnName"/>
+        <result column="column_value" property="columnValue"/>
+    </resultMap>
+    <select id="querySkuSettingSet" resultMap="BaseResult">
+        SELECT id,codeType,`column_name`,column_value FROM ls_sku_source_setting
+    </select>
+    <delete id="deleteSkuSettingSet" parameterType="java.lang.String">
+        DELETE  FROM ls_sku_source_setting WHERE codeType=#{codeType}
+    </delete>
+    <insert id="addSkuSettingSet" parameterType="io.uhha.setting.bean.SkuSourceSetting">
+        INSERT INTO ls_sku_source_setting (codeType,`column_name`,column_value) VALUES
+        <foreach collection="list" index="index" item="OssSetting" separator=",">
+            (
+            #{OssSetting.codeType},#{OssSetting.columnName},#{OssSetting.columnValue}
+            )
+        </foreach>
+    </insert>
+</mapper>

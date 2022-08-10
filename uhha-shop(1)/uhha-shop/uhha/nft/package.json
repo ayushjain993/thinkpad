@@ -1,0 +1,25 @@
+{
+  "name": "uhha",
+  "version": "1.0.0",
+  "description": "My Uhha NFT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Uhha",
+    "NFT"
+  ],
+  "author": "bobjia",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "ethers": "^5.0.0",
+    "hardhat": "^2.6.6"
+  },
+  "dependencies": {
+    "@alch/alchemy-web3": "^1.1.6",
+    "@openzeppelin/contracts": "^4.3.2",
+    "dotenv": "^10.0.0"
+  }
+}

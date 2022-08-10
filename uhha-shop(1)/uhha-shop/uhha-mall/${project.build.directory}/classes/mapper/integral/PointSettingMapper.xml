@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.integral.mapper.PointSettingMapper">
+
+    <resultMap id="pointSetting" type="io.uhha.integral.domain.PointSetting">
+        <result column="id" property="id"/>
+        <result column="is_open" property="isOpen"/>
+        <result column="email_point" property="emailPoint"/>
+        <result column="comment_point" property="commentPoint"/>
+        <result column="video_point" property="videoPoint"/>
+        <result column="like_point" property="likePoint"/>
+        <result column="use_point" property="usePoint"/>
+        <result column="offset_money" property="offsetMoney"/>
+        <result column="offset_token" property="offsetToken"/>
+        <result column="min_redeem_token" property="minRedeemToken"/>
+        <result column="max_redeem_token" property="maxRedeemToken"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+    <select id="queryPointSetting" resultMap="pointSetting">
+        select * from sms_point_setting
+    </select>
+
+    <update id="updatePointSetting" parameterType="io.uhha.integral.domain.PointSetting">
+        update sms_point_setting set is_open = #{isOpen},email_point=#{emailPoint},comment_point=#{commentPoint}, video_point=#{videoPoint}, like_point=#{likePoint},
+        use_point = #{usePoint},offset_money = #{offsetMoney},offset_token = #{offsetToken},min_redeem_token = #{minRedeemToken},max_redeem_token = #{maxRedeemToken},modify_time = now() where id = #{id}
+    </update>
+</mapper>

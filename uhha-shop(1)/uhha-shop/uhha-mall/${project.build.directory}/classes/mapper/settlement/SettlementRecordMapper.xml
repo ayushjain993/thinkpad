@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.settlement.mapper.SettlementRecordMapper">
+
+    <resultMap type="SettlementRecord" id="SettlementRecordResult">
+        <result property="id"    column="id"    />
+        <result property="accountCode"    column="account_code"    />
+        <result property="relatedAccountCode"    column="related_account_code"    />
+        <result property="inBilling"    column="in_billing"    />
+        <result property="outBilling"    column="out_billing"    />
+        <result property="recordType" column="record_type"/>
+        <result property="settlementStaus"    column="settlement_staus"    />
+        <result property="omsBillingRecords"    column="oms_billing_records"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectSettlementRecordVo">
+        select id, account_code, related_account_code, oms_billing_records, in_billing, out_billing, record_type, settlement_staus, del_flag, create_time from settlement_record
+    </sql>
+
+    <select id="selectSettlementRecordList" parameterType="SettlementRecord" resultMap="SettlementRecordResult">
+        <include refid="selectSettlementRecordVo"/>
+        <where>
+            <if test="accountCode != null  and accountCode != ''"> and account_code = #{accountCode}</if>
+            <if test="relatedAccountCode != null  and relatedAccountCode != ''"> and related_account_code = #{relatedAccountCode}</if>
+            <if test="inBilling != null "> and in_billing = #{inBilling}</if>
+            <if test="outBilling != null "> and out_billing = #{outBilling}</if>
+            <if test="settlementStaus != null  and settlementStaus != ''"> and settlement_staus = #{settlementStaus}</if>
+            <if test="recordType != null  and recordType != ''"> and record_type = #{recordType}</if>
+        </where>
+    </select>
+
+    <select id="selectSettlementRecordById" parameterType="Long" resultMap="SettlementRecordResult">
+        <include refid="selectSettlementRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSettlementRecord" parameterType="SettlementRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into settlement_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountCode != null and accountCode != ''">account_code,</if>
+            <if test="relatedAccountCode != null and relatedAccountCode != ''">related_account_code,</if>
+            <if test="inBilling != null">in_billing,</if>
+            <if test="outBilling != null">out_billing,</if>
+            <if test="recordType != null">record_type,</if>
+            <if test="settlementStaus != null and settlementStaus != ''">settlement_staus,</if>
+            <if test="omsBillingRecords != null and omsBillingRecords != ''">oms_billing_records,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountCode != null and accountCode != ''">#{accountCode},</if>
+            <if test="relatedAccountCode != null and relatedAccountCode != ''">#{relatedAccountCode},</if>
+            <if test="inBilling != null">#{inBilling},</if>
+            <if test="outBilling != null">#{outBilling},</if>
+            <if test="recordType != null">#{recordType},</if>
+            <if test="settlementStaus != null and settlementStaus != ''">#{settlementStaus},</if>
+            <if test="omsBillingRecords != null and omsBillingRecords != ''">#{omsBillingRecords},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSettlementRecord" parameterType="SettlementRecord">
+        update settlement_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="accountCode != null and accountCode != ''">account_code = #{accountCode},</if>
+            <if test="relatedAccountCode != null and relatedAccountCode != ''">related_account_code = #{relatedAccountCode},</if>
+            <if test="inBilling != null">in_billing = #{inBilling},</if>
+            <if test="outBilling != null">out_billing = #{outBilling},</if>
+            <if test="recordType != null">record_type = #{recordType},</if>
+            <if test="settlementStaus != null and settlementStaus != ''">settlement_staus = #{settlementStaus},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSettlementRecordById" parameterType="Long">
+        delete from settlement_record where id = #{id}
+    </delete>
+
+    <delete id="deleteSettlementRecordByIds" parameterType="String">
+        delete from settlement_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

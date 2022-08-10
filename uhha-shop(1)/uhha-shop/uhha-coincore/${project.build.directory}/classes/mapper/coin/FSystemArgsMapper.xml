@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.uhha.coin.system.mapper.FSystemArgsMapper" >
+
+  <resultMap id="BaseResultMap" type="io.uhha.coin.system.domain.FSystemArgs">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="fkey" jdbcType="VARCHAR" property="fkey" />
+    <result column="fvalue" jdbcType="VARCHAR" property="fvalue" />
+    <result column="fdescription" jdbcType="VARCHAR" property="fdescription" />
+    <result column="ftype" jdbcType="INTEGER" property="ftype" />
+    <result column="furl" jdbcType="VARCHAR" property="furl" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  
+  <sql id="systemArgsColumn">
+      fid, fkey, fvalue, fdescription, ftype, furl, version
+  </sql>
+
+  <update id="updateByValue" parameterType="io.uhha.coin.system.domain.FSystemArgs">
+    update f_system_args set
+      fvalue = #{fvalue,jdbcType=VARCHAR}
+    where fkey = #{fkey,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectFSystemArgsList" parameterType="FSystemArgs" resultMap="BaseResultMap">
+    select
+    <include refid="systemArgsColumn"/>
+    from f_system_args
+    <where>
+      <if test="fkey != null  and fkey != ''"> fkey = #{fkey}</if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from f_system_args where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="FSystemArgs" keyProperty="fid">
+    insert into f_system_args (
+      fkey,
+      fvalue,
+      fdescription,
+      version,
+      ftype,
+      furl
+    ) values (
+               #{fkey,jdbcType=VARCHAR},
+               #{fvalue,jdbcType=VARCHAR},
+               #{fdescription,jdbcType=VARCHAR},
+               #{version,jdbcType=INTEGER},
+               #{ftype,jdbcType=INTEGER},
+               #{furl,jdbcType=VARCHAR} )
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="FSystemArgs">
+    update f_system_args set
+                           fkey = #{fkey,jdbcType=VARCHAR},
+                           fvalue = #{fvalue,jdbcType=VARCHAR},
+                           fdescription = #{fdescription,jdbcType=VARCHAR},
+                           version = version + 1,
+                           ftype = #{ftype,jdbcType=INTEGER},
+                           furl = #{furl,jdbcType=VARCHAR}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="FSystemArgs">
+    select <include refid="systemArgsColumn" /> from f_system_args where fid = #{fid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultType="FSystemArgs">
+    select <include refid="systemArgsColumn" /> from f_system_args
+  </select>
+
+
+  <!-- Admin -->
+  <select id="getSystemArgsPageList" resultType="FSystemArgs" parameterType="java.util.Map" >
+    select fid, fkey, fvalue, fdescription, version,ftype, furl
+    from f_system_args
+    where 1=1
+    <if test="keyword != null">
+      and	(
+      fkey like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+      fvalue like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="ftype!=null and ftype!=0">
+      and ftype = #{ftype}
+    </if>
+    order by ${orderfield} ${orderdirection}
+    limit #{offset},#{limit}
+  </select>
+
+  <select id="countSystemArgsByParam" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select count(fid)
+    from f_system_args
+    where 1=1
+    <if test="keyword != null">
+      and	(
+      fkey like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+      fvalue like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="ftype!=null and ftype!=0">
+      and ftype = #{ftype}
+    </if>
+  </select>
+
+
+  <delete id="deleteFSystemArgsByFid" parameterType="Long">
+    delete from f_system_args where fid = #{fid}
+  </delete>
+
+  <delete id="deleteFSystemArgsByFids" parameterType="String">
+    delete from f_system_args where fid in
+    <foreach item="fid" collection="array" open="(" separator="," close=")">
+      #{fid}
+    </foreach>
+  </delete>
+</mapper>

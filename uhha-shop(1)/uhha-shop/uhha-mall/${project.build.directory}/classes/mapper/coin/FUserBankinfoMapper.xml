@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.coin.user.mapper.FUserBankinfoMapper">
+  <resultMap id="BaseResultMap" type="FUserBankinfo">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="fuid" jdbcType="INTEGER" property="fuid" />
+    <result column="fname" jdbcType="VARCHAR" property="fname" />
+    <result column="fbanknumber" jdbcType="VARCHAR" property="fbanknumber" />
+	  <result column="fbankid" jdbcType="INTEGER" property="fbankid" />
+    <result column="fbanktype" jdbcType="INTEGER" property="fbanktype" />
+    <result column="fcreatetime" jdbcType="TIMESTAMP" property="fcreatetime" />
+    <result column="fstatus" jdbcType="INTEGER" property="fstatus" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="init" jdbcType="BIT" property="init" />
+    <result column="faddress" jdbcType="VARCHAR" property="faddress" />
+    <result column="frealname" jdbcType="VARCHAR" property="frealname" />
+	  <result column="countryid" jdbcType="INTEGER" property="countryid" />
+	  <result column="fcountry" jdbcType="VARCHAR" property="fcountry" />
+    <result column="fprov" jdbcType="VARCHAR" property="fprov" />
+    <result column="fcity" jdbcType="VARCHAR" property="fcity" />
+    <result column="fdist" jdbcType="VARCHAR" property="fdist" />
+	  <result column="ftype" jdbcType="INTEGER" property="ftype" />
+
+  </resultMap>
+  
+  <sql id="bankinfoColumn">fid, fuid, fname, fbanknumber, fbankid, fbanktype, fcreatetime, fstatus, version,
+    init, faddress, frealname, countryid, fcountry, fprov, fcity, fdist, ftype</sql>
+    
+  <select id="getBankInfoListByUser" resultMap="BaseResultMap" >
+    select 
+    	f_user_bankinfo.fid, 
+    	f_user_bankinfo.fuid, 
+    	f_user_bankinfo.fname, 
+    	f_user_bankinfo.fbanknumber,
+	    f_user_bankinfo.fbankid,
+   	 	f_user_bankinfo.fbanktype,
+   	 	f_user_bankinfo.fcreatetime,
+   	 	f_user_bankinfo.fstatus,
+    	f_user_bankinfo.version, 
+    	f_user_bankinfo.init, 
+    	f_user_bankinfo.faddress, 
+    	f_user_bankinfo.frealname,
+	    f_user_bankinfo.fcountry,
+	    f_user_bankinfo.countryid,
+	    f_user_bankinfo.fprov,
+    	f_user_bankinfo.fcity, 
+    	f_user_bankinfo.ftype, 
+    	f_user_bankinfo.fdist
+    from 
+    	f_user_bankinfo
+    where 
+    	f_user_bankinfo.fuid = #{fuid,jdbcType=BIGINT}
+    <if test="ftype != null">
+    	and f_user_bankinfo.ftype= #{ftype,jdbcType=INTEGER} 
+    </if>
+    	and f_user_bankinfo.init=1 
+  </select>
+
+	<select id="getBankInfoListByUid" resultType="FUserBankinfo" parameterType="java.lang.Long">
+		select <include refid="bankinfoColumn" />
+		from f_user_bankinfo where
+		f_user_bankinfo.fuid = #{fuid,jdbcType=BIGINT}
+	</select>
+  
+  <select id="getBankInfoListByBankInfo" resultMap="BaseResultMap" parameterType="FUserBankinfo" >
+    select <include refid="bankinfoColumn" />
+    from f_user_bankinfo
+    where 1=1 
+	<if test="fuid != null">
+	 	and fuid = #{fuid,jdbcType=BIGINT}
+	</if>
+	<if test="ftype != null">
+	 	and ftype= #{ftype,jdbcType=INTEGER} 
+	</if>
+	<if test="init != null">
+	 	and init= #{init,jdbcType=BIT} 
+	</if>
+	<if test="fbanknumber != null">
+	 	and fbanknumber= #{fbanknumber,jdbcType=VARCHAR} 
+	</if>
+	<if test="fstatus != null">
+	 	and fstatus= #{fstatus,jdbcType=VARCHAR} 
+	</if>
+	  and f_user_bankinfo.init=1
+  </select>
+  
+  
+  <insert id="insert" parameterType="FUserBankinfo" keyProperty="fid">
+    insert into f_user_bankinfo (
+    	fuid, 
+    	fname,
+		fbankid,
+      	fbanknumber, 
+      	fbanktype, 
+      	fcreatetime, 
+      	fstatus, 
+      	version, 
+      	init, 
+      	faddress, 
+      	frealname,
+        countryid,
+        fcountry,
+      	fprov, 
+      	fcity, 
+      	ftype, 
+      	fdist
+    )
+    values (
+    	#{fuid,jdbcType=BIGINT},
+    	#{fname,jdbcType=VARCHAR},
+		#{fbankid,jdbcType=BIGINT},
+		#{fbanknumber,jdbcType=VARCHAR},
+      	#{fbanktype,jdbcType=INTEGER}, 
+      	#{fcreatetime,jdbcType=TIMESTAMP}, 
+      	#{fstatus,jdbcType=INTEGER}, 
+      	#{version,jdbcType=INTEGER}, 
+      	#{init,jdbcType=BIT}, 
+      	#{faddress,jdbcType=VARCHAR}, 
+      	#{frealname,jdbcType=VARCHAR}, 
+      	#{countryid,jdbcType=VARCHAR},
+		#{fcountry,jdbcType=VARCHAR},
+		#{fprov,jdbcType=VARCHAR},
+      	#{fcity,jdbcType=VARCHAR}, 
+      	#{ftype,jdbcType=INTEGER}, 
+      	#{fdist,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="FUserBankinfo">
+    update f_user_bankinfo
+    set 
+    	fuid = #{fuid,jdbcType=BIGINT},
+      	fname = #{fname,jdbcType=VARCHAR},
+      	fbanknumber = #{fbanknumber,jdbcType=VARCHAR},
+      	fbankid = #{fbankid,jdbcType=BIGINT},
+		fbanktype = #{fbanktype,jdbcType=INTEGER},
+      	fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+      	fstatus = #{fstatus,jdbcType=INTEGER},
+      	version = version + 1,
+      	init = #{init,jdbcType=BIT},
+      	faddress = #{faddress,jdbcType=VARCHAR},
+      	frealname = #{frealname,jdbcType=VARCHAR},
+		countryid = #{countryid,jdbcType=VARCHAR},
+		fcountry = #{fcountry,jdbcType=VARCHAR},
+      	fprov = #{fprov,jdbcType=VARCHAR},
+      	fcity = #{fcity,jdbcType=VARCHAR},
+      	ftype = #{ftype,jdbcType=INTEGER},
+      	fdist = #{fdist,jdbcType=VARCHAR}
+    where 
+    	fid = #{fid,jdbcType=INTEGER} and version = #{version}
+  </update>
+
+	<update id="updateByUid" parameterType="FUserBankinfo">
+		update f_user_bankinfo
+		set
+			fname = #{fname,jdbcType=VARCHAR},
+			fbanknumber = #{fbanknumber,jdbcType=VARCHAR},
+			fbankid = #{fbankid,jdbcType=BIGINT},
+			fbanktype = #{fbanktype,jdbcType=INTEGER},
+			fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP},
+			fstatus = #{fstatus,jdbcType=INTEGER},
+			version = version + 1,
+			init = #{init,jdbcType=BIT},
+			faddress = #{faddress,jdbcType=VARCHAR},
+			frealname = #{frealname,jdbcType=VARCHAR},
+			countryid = #{countryid,jdbcType=VARCHAR},
+			fcountry = #{fcountry,jdbcType=VARCHAR},
+			fprov = #{fprov,jdbcType=VARCHAR},
+			fcity = #{fcity,jdbcType=VARCHAR},
+			ftype = #{ftype,jdbcType=INTEGER},
+			fdist = #{fdist,jdbcType=VARCHAR}
+		where
+			fuid = #{fuid,jdbcType=BIGINT}
+	</update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select <include refid="bankinfoColumn" />
+    from f_user_bankinfo
+    where 
+    	fid = #{fid,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

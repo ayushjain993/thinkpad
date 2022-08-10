@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.uhha.coin.admin.mapper.FDayCoinBalanceMapper" >
+ <sql id="coinBalanceColumn">
+  	 fid,fdate, fcoinid, fbalance, fcreatedate, fremark, version
+  </sql>
+
+ <select id="getBalancePageList" resultType="FCoinBalance"  parameterType="java.util.Map">
+  select <include refid="coinBalanceColumn" />
+  from f_coin_balance
+  where 1=1
+  <if test="fcoinid != null">
+   and fcoinid = #{fcoinid}
+  </if>
+  <if test="fcreatedate != null">
+   and date_format(fcreatedate, '%Y-%m-%d') = date_format(#{fcreatedate}, '%Y-%m-%d')
+  </if>
+  order by ${orderField} ${orderDirection}
+  limit #{offset},#{limit}
+ </select>
+
+ <select id="countBalancePageList" resultType="java.lang.Integer" parameterType="java.util.Map">
+  select count(fid)
+  from f_coin_balance
+  where 1=1
+  <if test="fcoinid != null">
+   and fcoinid = #{fcoinid}
+  </if>
+  <if test="fcreatedate != null">
+   and date_format(fcreatedate, '%Y-%m-%d') = date_format(#{fcreatedate}, '%Y-%m-%d')
+  </if>
+ </select>
+</mapper>

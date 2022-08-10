@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.uhha.coin.system.mapper.SystemCoinTypeMapper" >
+
+  <sql id="systemCoinTypeColumn">
+    id, sort_id, `name`, short_name, full_name, symbol, type, coin_type, status, is_withdraw,
+    is_recharge,is_push, is_finances, risk_num, ip, port, access_key, secrt_key, eth_account, contract_address, asset_id,
+    network_fee, confirmations, web_logo, app_logo, gmt_create, gmt_modified,coin_introduce,
+    version,fadminid,min_count
+  </sql>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_coin_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="SystemCoinType" keyProperty="id">
+    insert into system_coin_type (id, sort_id, name, 
+      short_name, symbol, type, full_name,
+      coin_type, status, is_withdraw, 
+      is_recharge, is_push, is_finances, risk_num, ip, port, access_key,
+      secrt_key, eth_account, contract_address, asset_id, network_fee,
+      confirmations, web_logo,
+      app_logo, gmt_create, gmt_modified, coin_introduce,coin_advantage,
+      version,fadminid,min_count)
+    values (#{id,jdbcType=INTEGER}, #{sortId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+      #{shortName,jdbcType=VARCHAR}, #{symbol,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},#{fullName,jdbcType=VARCHAR},
+      #{coinType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{isWithdraw,jdbcType=BIT},
+      #{isRecharge,jdbcType=BIT}, #{isPush,jdbcType=BIT}, #{isFinances,jdbcType=BIT}, #{riskNum,jdbcType=DECIMAL}, #{ip,jdbcType=VARCHAR}, #{port,jdbcType=VARCHAR}, #{accessKey,jdbcType=VARCHAR},
+      #{secrtKey,jdbcType=VARCHAR}, #{ethAccount,jdbcType=VARCHAR}, #{contractAddress,jdbcType=VARCHAR}, #{assetId,jdbcType=BIGINT}, #{networkFee,jdbcType=DECIMAL},
+      #{confirmations,jdbcType=INTEGER}, #{webLogo,jdbcType=VARCHAR},
+      #{appLogo,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{coinIntroduce,jdbcType=TIMESTAMP},#{coinAdvantage,jdbcType=TIMESTAMP},
+      #{version,jdbcType=INTEGER}, #{fadminid,jdbcType=INTEGER}, #{minCount,jdbcType=DECIMAL})
+  </insert>
+  <update id="updateSystemCoinType" parameterType="SystemCoinType" >
+    update system_coin_type
+    set sort_id = #{sortId,jdbcType=INTEGER},
+    name = #{name,jdbcType=VARCHAR},
+    short_name = #{shortName,jdbcType=VARCHAR},
+    full_name = #{fullName,jdbcType=VARCHAR},
+    symbol = #{symbol,jdbcType=VARCHAR},
+    type = #{type,jdbcType=INTEGER},
+    coin_type = #{coinType,jdbcType=INTEGER},
+    status = #{status,jdbcType=INTEGER},
+    is_withdraw = #{isWithdraw,jdbcType=BIT},
+    is_recharge = #{isRecharge,jdbcType=BIT},
+    is_push = #{isPush,jdbcType=BIT},
+    is_finances = #{isFinances,jdbcType=BIT},
+    risk_num = #{riskNum,jdbcType=DECIMAL},
+    ip = #{ip,jdbcType=VARCHAR},
+    port = #{port,jdbcType=VARCHAR},
+    access_key = #{accessKey,jdbcType=VARCHAR},
+    secrt_key = #{secrtKey,jdbcType=VARCHAR},
+    eth_account = #{ethAccount,jdbcType=VARCHAR},
+    contract_address = #{contractAddress,jdbcType=VARCHAR},
+    asset_id = #{assetId,jdbcType=BIGINT},
+    network_fee = #{networkFee,jdbcType=DECIMAL},
+    confirmations = #{confirmations,jdbcType=INTEGER},
+    web_logo = #{webLogo,jdbcType=VARCHAR},
+    app_logo = #{appLogo,jdbcType=VARCHAR},
+    gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+    gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+    coin_introduce = #{coinIntroduce,jdbcType=TIMESTAMP},
+    coin_advantage = #{coinAdvantage,jdbcType=VARCHAR},
+    version = version + 1,
+    fadminid = #{fadminid,jdbcType=INTEGER},
+    min_count = #{minCount,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultType="SystemCoinType" parameterType="java.lang.Integer" >
+    select system_coin_type.id,
+    system_coin_type.sort_id,
+    system_coin_type.name,
+    system_coin_type.short_name,
+    system_coin_type.full_name,
+    system_coin_type.symbol,
+    system_coin_type.type,
+    system_coin_type.coin_type,
+    system_coin_type.status,
+    system_coin_type.is_withdraw,
+    system_coin_type.is_recharge,
+    system_coin_type.is_push,
+    system_coin_type.is_finances,
+    system_coin_type.risk_num,
+    system_coin_type.ip,
+    system_coin_type.port,
+    system_coin_type.access_key,
+    system_coin_type.secrt_key,
+    system_coin_type.eth_account,
+    system_coin_type.contract_address,
+    system_coin_type.asset_id,
+    system_coin_type.network_fee,
+    system_coin_type.confirmations,
+    system_coin_type.web_logo,
+    system_coin_type.app_logo,
+    system_coin_type.gmt_create,
+    system_coin_type.gmt_modified,
+    system_coin_type.coin_introduce,
+    system_coin_type.coin_advantage,
+    system_coin_type.version,
+    system_coin_type.fadminid,
+    system_coin_type.min_count,
+    sys_user.user_name fadminname
+    from system_coin_type left join
+    sys_user on sys_user.user_id = system_coin_type.fadminid
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultType="SystemCoinType" >
+    select system_coin_type.id,
+    system_coin_type.sort_id,
+    system_coin_type.name,
+    system_coin_type.short_name,
+    system_coin_type.full_name,
+    system_coin_type.symbol,
+    system_coin_type.type,
+    system_coin_type.coin_type,
+    system_coin_type.status,
+    system_coin_type.is_withdraw,
+    system_coin_type.is_recharge,
+    system_coin_type.is_push,
+    system_coin_type.is_finances,
+    system_coin_type.risk_num,
+    system_coin_type.ip,
+    system_coin_type.port,
+    system_coin_type.access_key,
+    system_coin_type.secrt_key,
+    system_coin_type.eth_account,
+    system_coin_type.contract_address,
+    system_coin_type.asset_id,
+    system_coin_type.network_fee,
+    system_coin_type.confirmations,
+    system_coin_type.web_logo,
+    system_coin_type.app_logo,
+    system_coin_type.gmt_create,
+    system_coin_type.gmt_modified,
+    system_coin_type.coin_introduce,
+    system_coin_type.coin_advantage,
+    system_coin_type.version,
+    system_coin_type.fadminid,
+    system_coin_type.min_count,
+           sys_user.user_name fadminname
+    from system_coin_type left join
+    sys_user on sys_user.user_id = system_coin_type.fadminid  ORDER BY sort_id ASC
+  </select>
+
+  <!-- Admin -->
+
+  <select id="getSystemCoinTypeList" parameterType="java.util.Map" resultType="SystemCoinType">
+    select
+    system_coin_type.id,
+    system_coin_type.sort_id,
+    system_coin_type.name,
+    system_coin_type.short_name,
+    system_coin_type.full_name,
+    system_coin_type.symbol,
+    system_coin_type.type,
+    system_coin_type.coin_type,
+    system_coin_type.status,
+    system_coin_type.is_withdraw,
+    system_coin_type.is_recharge,
+    system_coin_type.is_push,
+    system_coin_type.is_finances,
+    system_coin_type.risk_num,
+    system_coin_type.ip,
+    system_coin_type.port,
+    system_coin_type.access_key,
+    system_coin_type.secrt_key,
+    system_coin_type.eth_account,
+    system_coin_type.contract_address,
+    system_coin_type.asset_id,
+    system_coin_type.network_fee,
+    system_coin_type.confirmations,
+    REPLACE(system_coin_type.web_logo,'https://fubt.oss-ap-southeast-1.aliyuncs.com','https://www.fubt.top') web_logo,
+    REPLACE(system_coin_type.app_logo,'https://fubt.oss-ap-southeast-1.aliyuncs.com','https://www.fubt.top') app_logo,
+    system_coin_type.gmt_create,
+    system_coin_type.gmt_modified,
+    system_coin_type.coin_introduce,
+    system_coin_type.version,
+    system_coin_type.fadminid,
+    system_coin_type.min_count,
+    sys_user.user_name fadminname
+    from system_coin_type left join
+    sys_user on sys_user.user_id = system_coin_type.fadminid
+    where 1=1
+    <if test="keyword != null">
+      and (
+      name like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+      short_name like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="coinType !=null and coinType !=0">
+      and coin_type = #{coinType}
+    </if>
+    order by ${orderfield} ${orderdirection}
+    limit #{offset},#{limit}
+  </select>
+
+  <select id="getSystemCoinTypeCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(id) from system_coin_type where 1=1
+    <if test="keyword != null">
+      and (
+      name like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+      short_name like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+      )
+    </if>
+    <if test="coinType !=null and coinType !=0">
+      and coin_type = #{coinType}
+    </if>
+  </select>
+
+  <update id="updateSystemCoinTypeStatus" parameterType="SystemCoinType">
+    update system_coin_type set
+    status = #{status,jdbcType=INTEGER},
+    is_recharge = #{isRecharge,jdbcType=BOOLEAN},
+    is_withdraw = #{isWithdraw,jdbcType=BOOLEAN},
+    version = version + 1
+    where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
+  </update>
+
+
+  <update id="updateSystemCoinTypeLink" parameterType="SystemCoinType">
+    update system_coin_type set
+    access_key = #{accessKey,jdbcType=VARCHAR},
+    secrt_key = #{secrtKey,jdbcType=VARCHAR},
+    ip = #{ip,jdbcType=VARCHAR},
+    port = #{port,jdbcType=VARCHAR},
+    is_recharge = #{isRecharge,jdbcType=BIT},
+    is_withdraw = #{isWithdraw,jdbcType=BIT},
+    version = version + 1
+    where id = #{id,jdbcType=INTEGER} and version = #{version}
+  </update>
+
+</mapper>

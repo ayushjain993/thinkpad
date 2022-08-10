@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="uhha-im" />
+        <module name="uhha-coincore" />
+        <module name="uhha-web" />
+        <module name="uhha-mall" />
+        <module name="uhha-quartz" />
+        <module name="uhha-store" />
+        <module name="uhha-admin" />
+        <module name="uhha-framework" />
+        <module name="uhha-generator" />
+        <module name="uhha-common" />
+        <module name="uhha-system" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="uhha" target="1.5" />
+      <module name="uhha-admin" target="1.5" />
+      <module name="uhha-coincore" target="1.5" />
+      <module name="uhha-common" target="1.5" />
+      <module name="uhha-framework" target="1.5" />
+      <module name="uhha-generator" target="1.5" />
+      <module name="uhha-im" target="1.5" />
+      <module name="uhha-mall" target="1.5" />
+      <module name="uhha-quartz" target="1.5" />
+      <module name="uhha-store" target="1.5" />
+      <module name="uhha-system" target="1.5" />
+      <module name="uhha-web" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

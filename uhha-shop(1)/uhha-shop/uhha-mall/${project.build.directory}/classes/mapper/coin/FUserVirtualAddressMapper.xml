@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.uhha.coin.user.mapper.FUserVirtualAddressMapper" >
+ 
+  <sql id="addressColumn">fid, fcoinid, fadderess, fuid, fcreatetime</sql>
+
+  <select id="selectByUserAndCoin" resultType="FUserVirtualAddress" parameterType="FUserVirtualAddress" >
+    select <include refid="addressColumn" /> from f_user_virtual_address
+    where fuid = #{fuid,jdbcType=BIGINT} and fcoinid = #{fcoinid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectETHsByUserAndCoin" resultType="FUserVirtualAddress" parameterType="FUserVirtualAddress" >
+      SELECT <include refid="addressColumn"/> FROM f_user_virtual_address
+      where fuid = #{fuid,jdbcType=BIGINT} and fcoinid in (SELECT id FROM system_coin_type WHERE coin_type=3)
+  </select>
+
+    <select id="selectLETsByUserAndCoin" resultType="FUserVirtualAddress" parameterType="FUserVirtualAddress" >
+        SELECT <include refid="addressColumn"/> FROM f_user_virtual_address
+        where fuid = #{fuid,jdbcType=BIGINT} and fcoinid in (SELECT id FROM system_coin_type WHERE coin_type=14)
+    </select>
+
+  <select id="selectByUser" resultType="FUserVirtualAddress" parameterType="java.lang.Long">
+    select <include refid="addressColumn" /> from f_user_virtual_address where fuid= #{fuid,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByCoinAndAddress" resultType="FUserVirtualAddress" >
+    select <include refid="addressColumn" /> from f_user_virtual_address where fcoinid = #{fcoinid,jdbcType=INTEGER} and fadderess = #{fadderess,jdbcType=INTEGER}
+  </select>
+  
+   <insert id="insert" parameterType="FUserVirtualAddress" keyProperty="fid">
+    insert into f_user_virtual_address (
+    	fcoinid, 
+    	fadderess, 
+    	fuid, 
+    	fcreatetime
+    ) values (
+    	#{fcoinid,jdbcType=INTEGER}, 
+    	#{fadderess,jdbcType=VARCHAR}, 
+    	#{fuid,jdbcType=BIGINT},
+    	#{fcreatetime,jdbcType=TIMESTAMP} )
+  </insert>
+
+    <select id="getAddressNum" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select count(*) from f_user_virtual_address where fadderess = #{address,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getUserByAddress" resultType="FUserVirtualAddress">
+        select <include refid="addressColumn" /> from f_user_virtual_address
+        where fadderess = #{address,jdbcType=VARCHAR}
+        AND fcoinid = #{fcoinId,jdbcType=INTEGER}
+    </select>
+
+    <select id="listUserEthAddresses" resultType="io.uhha.coin.user.domain.FUserVirtualAddress">
+        select <include refid="addressColumn"/>
+        from f_user_virtual_address
+        where fcoinid = #{fcoinid,jdbcType=INTEGER}
+    </select>
+
+
+</mapper>

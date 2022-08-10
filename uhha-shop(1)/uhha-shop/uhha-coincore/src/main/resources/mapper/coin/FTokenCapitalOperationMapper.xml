@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.coin.capital.mapper.FTokenCapitalOperationMapper">
+
+    <insert id="insert" parameterType="io.uhha.coin.capital.domain.FTokenCapitalOperation" keyProperty="fid">
+		insert into f_token_capital_operation (
+			fcoinid,
+			fuid,
+			fcreatetime,
+			famount,
+			finouttype,
+			fstatus,
+			faccount,
+			fupdatetime,
+			fadminid,
+			ffees,
+			version
+			)
+		values (
+			#{fcoinid,jdbcType=INTEGER},
+			#{fuid,jdbcType=BIGINT},
+			#{fcreatetime,jdbcType=TIMESTAMP},
+			#{famount,jdbcType=DECIMAL},
+			#{finouttype,jdbcType=INTEGER},
+			#{fstatus,jdbcType=INTEGER},
+			#{faccount,jdbcType=VARCHAR},
+			#{fupdatetime,jdbcType=TIMESTAMP},
+			#{fadminid,jdbcType=INTEGER},
+			#{ffees,jdbcType=DECIMAL},
+			#{version,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<sql id="operationColumn">
+		fid, fcoinid, fuid, fcreatetime, famount, finouttype, fstatus,
+		 faccount, fupdatetime, fadminid, ffees,version
+	</sql>
+
+
+	<select id="countTokenCapitalOperation" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(fid)
+		from f_token_capital_operation
+		where 1=1
+		<if test="fuid != null">
+			and fuid = #{fuid,jdbcType=BIGINT}
+		</if>
+		<if test="faccount != null">
+			and faccount = #{faccount,jdbcType=VARCHAR}
+		</if>
+		<if test="fstatus != null">
+			and fstatus = #{fstatus,jdbcType=INTEGER}
+		</if>
+		<if test="finouttype != null">
+			and finouttype = #{finouttype,jdbcType=INTEGER}
+		</if>
+		<if test="begindate != null">
+			<![CDATA[and DATE_FORMAT(fcreatetime,"%Y-%m-%d") >= #{begindate,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="enddate != null">
+			<![CDATA[and DATE_FORMAT(fcreatetime,"%Y-%m-%d") <= #{enddate,jdbcType=VARCHAR}]]>
+		</if>
+	</select>
+
+	<select id="getPageTokenCapitalOperation" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="operationColumn" />
+		from f_token_capital_operation
+		where 1=1
+		<if test="fuid != null">
+			and fuid = #{fuid,jdbcType=BIGINT}
+		</if>
+		<if test="faccount != null">
+			and faccount = #{faccount,jdbcType=VARCHAR}
+		</if>
+		<if test="fstatus != null">
+			and fstatus = #{fstatus,jdbcType=INTEGER}
+		</if>
+		<if test="finouttype != null">
+			and finouttype = #{finouttype,jdbcType=INTEGER}
+		</if>
+		<if test="begindate != null">
+			<![CDATA[and DATE_FORMAT(fcreatetime,"%Y-%m-%d") >= #{begindate,jdbcType=VARCHAR}]]>
+		</if>
+		<if test="enddate != null">
+			<![CDATA[and DATE_FORMAT(fcreatetime,"%Y-%m-%d") <= #{enddate,jdbcType=VARCHAR}]]>
+		</if>
+		order by fcreatetime desc
+		limit #{offset},#{limit}
+	</select>
+
+
+	<update id="updateByPrimaryKey" parameterType="io.uhha.coin.capital.domain.FTokenCapitalOperation">
+		update f_token_capital_operation
+		set
+		fcoinid = #{fcoinid,jdbcType=INTEGER},
+		fuid = #{fuid,jdbcType=BIGINT},
+		famount = #{famount,jdbcType=DECIMAL},
+		finouttype = #{finouttype,jdbcType=INTEGER},
+		fstatus = #{fstatus,jdbcType=INTEGER},
+		faccount = #{faccount,jdbcType=VARCHAR},
+		fupdatetime = #{fupdatetime,jdbcType=TIMESTAMP},
+		fadminid = #{fadminid,jdbcType=INTEGER},
+		ffees = #{ffees,jdbcType=DECIMAL},
+		version = version + 1
+		where
+		fid = #{fid,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="operationColumn" />
+		from f_token_capital_operation
+		where
+		fid = #{fid,jdbcType=INTEGER}
+	</select>
+
+
+	<select id="selectTokenById" parameterType="java.lang.Integer" resultType="FTokenCapitalOperation">
+		select
+		<include refid="operationColumn"/>
+		from f_token_capital_operation
+		where fid = #{fid,jdbcType=INTEGER}
+	</select>
+
+
+	<!-- Admin -->
+	<select id="getAdminPageList" resultType="FTokenCapitalOperation" parameterType="java.util.Map">
+		select
+		f_token_capital_operation.fid,
+		f_token_capital_operation.fcoinid,
+		f_token_capital_operation.fuid,
+		f_token_capital_operation.finouttype,
+		f_token_capital_operation.faccount,
+		f_token_capital_operation.famount,
+		f_token_capital_operation.fstatus,
+		f_token_capital_operation.fadminid,
+		f_token_capital_operation.ffees,
+		f_token_capital_operation.fcreatetime,
+		f_token_capital_operation.fupdatetime,
+		f_token_capital_operation.version,
+		ums_member.username,
+		ums_member.nickname,
+		concat(ums_member.firstname,' ',ums_member.lastname) frealname,
+		sys_user.user_name fadminname
+		from
+		f_token_capital_operation left join
+		ums_member on f_token_capital_operation.fuid = ums_member.id left join
+		sys_user on sys_user.user_id = f_token_capital_operation.fadminid
+		where 1=1
+
+		<if test="keyword != null">
+			and (
+			f_token_capital_operation.fuid like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+			f_token_capital_operation.fpayee like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+			f_token_capital_operation.famount like concat(#{keyword,jdbcType=VARCHAR},if(LOCATE('.',#{keyword,jdbcType=VARCHAR})>0,'','.'),'%') or
+			ums_member.email like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+			ums_member.mobile like concat('%',#{keyword,jdbcType=VARCHAR},'%') or
+			ums_member.id = #{keyword,jdbcType=VARCHAR}
+			)
+		</if>
+		<if test="faccount != null">
+			and f_token_capital_operation.faccount = #{faccount,jdbcType=VARCHAR}
+		</if>
+		<if test="start != null">
+			<![CDATA[and f_token_capital_operation.fcreatetime >= #{start}]]>
+		</if>
+		<if test="end != null">
+			<![CDATA[and f_token_capital_operation.fcreatetime <= #{end}]]>
+		</if>
+		<if test="finouttype != null">
+			and f_token_capital_operation.finouttype = #{finouttype}
+		</if>
+		<if test="fstatus != null">
+			and f_token_capital_operation.fstatus in
+			<foreach collection="fstatus" item="item" open="(" separator="," close=")">
+				${item}
+			</foreach>
+		</if>
+		<if test="orderField != null">
+			order by f_token_capital_operation.${orderField} ${orderDirection}
+		</if>
+		limit #{offset},#{limit}
+	</select>
+
+	<select id="countAdminPage" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(*)
+		from
+		f_token_capital_operation left join
+		ums_member on f_token_capital_operation.fuid = ums_member.id
+		where 1=1
+		<if test="keyword != null">
+			and f_token_capital_operation.fuid = #{keyword,jdbcType=VARCHAR}
+		</if>
+		<if test="faccount != null">
+			and f_token_capital_operation.faccount = #{faccount,jdbcType=VARCHAR}
+		</if>
+		<if test="start != null">
+			<![CDATA[and f_token_capital_operation.fcreatetime >= #{start}]]>
+		</if>
+		<if test="end != null">
+			<![CDATA[and f_token_capital_operation.fcreatetime <= #{end}]]>
+		</if>
+		<if test="finouttype != null">
+			and f_token_capital_operation.finouttype = #{finouttype}
+		</if>
+		<if test="fstatus != null">
+			and f_token_capital_operation.fstatus in
+			<foreach collection="fstatus" item="item" open="(" separator="," close=")">
+				${item}
+			</foreach>
+		</if>
+	</select>
+
+	<resultMap id="BaseResultMap" type="io.uhha.coin.capital.domain.FTokenCapitalOperation">
+		<id column="fid" jdbcType="INTEGER" property="fid" />
+		<result column="fcoinid" jdbcType="INTEGER" property="fcoinid" />
+		<result column="fuid" jdbcType="INTEGER" property="fuid" />
+		<result column="fcreatetime" jdbcType="TIMESTAMP" property="fcreatetime" />
+		<result column="famount" jdbcType="DECIMAL" property="famount" />
+		<result column="finouttype" jdbcType="INTEGER" property="finouttype" />
+		<result column="fstatus" jdbcType="INTEGER" property="fstatus" />
+		<result column="faccount" jdbcType="VARCHAR" property="faccount" />
+		<result column="fupdatetime" jdbcType="TIMESTAMP" property="fupdatetime" />
+		<result column="fadminid" jdbcType="INTEGER" property="fadminid" />
+		<result column="ffees" jdbcType="DECIMAL" property="ffees" />
+		<result column="version" jdbcType="INTEGER" property="version" />
+	</resultMap>
+</mapper>

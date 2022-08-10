@@ -1,0 +1,133 @@
+# 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      # 主库数据源
+      master:
+        url: jdbc:mysql://localhost:3306/umall?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        username: root
+        password: ENC(7iRM0gcGNNfBvK1S47V9EoNQIali+RdlwVxiXv35Axm/VShLr2fBu1PB0XESUKwj)
+      # 从库数据源
+      slave:
+        # 从数据源开关/默认关闭
+        enabled: false
+        url:
+        username:
+        password:
+      # 初始连接数
+      initialSize: 5
+      # 最小连接池数量
+      minIdle: 10
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username:
+        login-password:
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+  # redis 配置
+  redis:
+    # 地址
+    host: localhost
+    # 端口，默认为6379
+    port: 6379
+    # 密码
+    password: ENC(v2+rbOWBIgOUomzVBHo0iJQr5fYZVFJJ9JUM7OWF3eoBUMbGZD/Uc4FB/jJJrRcn)
+    # 连接超时时间
+    timeout: 10s
+    lettuce:
+      pool:
+        # 连接池中的最小空闲连接
+        min-idle: 0
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池的最大数据库连接数
+        max-active: 8
+        # #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
+  # 请求前缀
+  pathMapping: /
+
+# 加密密码
+jasypt:
+  encryptor:
+    #    password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+    password: Whosyourdaddy6
+
+
+
+aliyun:
+  mq:
+    accessKey: LTAIdn0JC3v5DNVL
+    secretKey: oAc2KO8KDhB0TWrdUrT2g2P7mcnpGI
+    onsAddr: http://onsaddr-internet.aliyun.com/rocketmq/nsaddr4client-internet
+    topic:
+      entrust_state: ENTRUST_STATE_SCCH
+      validate: VALIDATE_SCCH
+      score: SCORE_SCCH
+      user_action: USER_ACTION_SCCH
+      admin_action: ADMIN_ACTION_SCCH
+    pid:
+      entrustState: PID_ENTRUST_STATE_SCCH
+      validate: PID_VALIDATE_SCCH
+      score: PID_SCORE_SCCH
+      userAction: PID_USER_ACTION_SCCH
+      adminAction: PID_ADMIN_ACTION_SCCH
+    cid:
+      entrustState: CID_ENTRUST_STATE_SCCH
+      validate: CID_VALIDATE_SCCH
+      score: CID_SCORE_SCCH
+      userAction: CID_USER_ACTION_SCCH
+      adminAction: CID_ADMIN_ACTION_SCCH
+  oss:
+    accessId: LTAIdn0JC3v5DNVL
+    accessKey: oAc2KO8KDhB0TWrdUrT2g2P7mcnpGI
+    ossEndpoint: http://oss-ap-southeast-1.aliyuncs.com
+    bucketBase: qbtone
+
+kuaidi:
+  key:
+  customer:
+  secret:
+  userid:

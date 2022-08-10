@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.shortvideo.mapper.UmsMemberLikesMapper">
+    <resultMap type="UmsMemberLikes" id="UmsMemberLikesResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="resourceId"    column="resource_id"    />
+        <result property="resourceOwnerId"    column="resource_owner_id"    />
+        <result property="type"    column="type"    />
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <sql id="selectUmsMemberLikesVo">
+        select id, uid, resource_id, resource_owner_id, type, create_time from ums_member_likes
+    </sql>
+
+    <select id="selectUmsMemberLikesList" parameterType="UmsMemberLikes" resultMap="UmsMemberLikesResult">
+        <include refid="selectUmsMemberLikesVo"/>
+        <where>
+            <if test="uid != null"> and uid = #{uid}</if>
+            <if test="resourceOwnerId != null"> and resource_owner_id = #{resourceOwnerId}</if>
+            <if test="resourceId != null  and resourceId != ''"> and resource_id = #{resourceId}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+
+    <insert id="insertUmsMemberLikes" parameterType="Long">
+        insert into ums_member_likes
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="resourceOwnerId != null">resource_owner_id,</if>
+            <if test="resourceId != null and resourceId != ''">resource_id,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="resourceId != null">#{resourceId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUmsMemberLikes" parameterType="UmsMemberLikes">
+        update ums_member_likes
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="resourceOwnerId != null">resource_owner_id = #{resourceOwnerId},</if>
+            <if test="resourceId != null and resourceId != ''">resource_id = #{resourceId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUmsMemberLikesById" parameterType="Long">
+        delete from ums_member_likes where id = #{id}
+    </delete>
+
+    <select id="selectUmsMemberLikesById" parameterType="Long" resultMap="UmsMemberLikesResult">
+        <include refid="selectUmsMemberLikesVo"/>
+         where id = #{id}
+    </select>
+
+    <select id="selectLikesCountByUid" parameterType="Long" resultType="java.lang.Long">
+        select count(0) from ums_member_likes where resource_owner_id = #{resourceOwnerId}
+    </select>
+
+    <delete id="deleteUmsMemberLikesByIds" parameterType="String">
+        delete from ums_member_likes where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

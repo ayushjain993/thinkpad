@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.settlement.mapper.InternalTransMapper">
+
+    <resultMap type="InternalTrans" id="InternalTransResult">
+        <result property="id"    column="id"    />
+        <result property="formAccountCode"    column="form_account_code"    />
+        <result property="toAccountCode"    column="to_account_code"    />
+        <result property="transferTime"    column="transfer_time"    />
+        <result property="transferAmount"    column="transfer_amount"    />
+        <result property="transferType"    column="transfer_type"    />
+        <result property="operateType"    column="operate_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectInternalTransVo">
+        select id, form_account_code, to_account_code, transfer_time, transfer_amount, transfer_type, operate_type, create_by, create_time, del_flag, remark from internal_trans
+    </sql>
+
+    <select id="selectInternalTransList" parameterType="InternalTrans" resultMap="InternalTransResult">
+        <include refid="selectInternalTransVo"/>
+        <where>
+            <if test="formAccountCode != null  and formAccountCode != ''"> and form_account_code = #{formAccountCode}</if>
+            <if test="toAccountCode != null  and toAccountCode != ''"> and to_account_code = #{toAccountCode}</if>
+            <if test="transferTime != null "> and transfer_time = #{transferTime}</if>
+            <if test="transferAmount != null "> and transfer_amount = #{transferAmount}</if>
+            <if test="transferType != null  and transferType != ''"> and transfer_type = #{transferType}</if>
+            <if test="operateType != null  and operateType != ''"> and operate_type = #{operateType}</if>
+        </where>
+    </select>
+
+    <select id="selectInternalTransById" parameterType="Long" resultMap="InternalTransResult">
+        <include refid="selectInternalTransVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertInternalTrans" parameterType="InternalTrans" useGeneratedKeys="true" keyProperty="id">
+        insert into internal_trans
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="formAccountCode != null and formAccountCode != ''">form_account_code,</if>
+            <if test="toAccountCode != null and toAccountCode != ''">to_account_code,</if>
+            <if test="transferTime != null">transfer_time,</if>
+            <if test="transferAmount != null">transfer_amount,</if>
+            <if test="transferType != null and transferType != ''">transfer_type,</if>
+            <if test="operateType != null and operateType != ''">operate_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="formAccountCode != null and formAccountCode != ''">#{formAccountCode},</if>
+            <if test="toAccountCode != null and toAccountCode != ''">#{toAccountCode},</if>
+            <if test="transferTime != null">#{transferTime},</if>
+            <if test="transferAmount != null">#{transferAmount},</if>
+            <if test="transferType != null and transferType != ''">#{transferType},</if>
+            <if test="operateType != null and operateType != ''">#{operateType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInternalTrans" parameterType="InternalTrans">
+        update internal_trans
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="formAccountCode != null and formAccountCode != ''">form_account_code = #{formAccountCode},</if>
+            <if test="toAccountCode != null and toAccountCode != ''">to_account_code = #{toAccountCode},</if>
+            <if test="transferTime != null">transfer_time = #{transferTime},</if>
+            <if test="transferAmount != null">transfer_amount = #{transferAmount},</if>
+            <if test="transferType != null and transferType != ''">transfer_type = #{transferType},</if>
+            <if test="operateType != null and operateType != ''">operate_type = #{operateType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInternalTransById" parameterType="Long">
+        delete from internal_trans where id = #{id}
+    </delete>
+
+    <delete id="deleteInternalTransByIds" parameterType="String">
+        delete from internal_trans where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

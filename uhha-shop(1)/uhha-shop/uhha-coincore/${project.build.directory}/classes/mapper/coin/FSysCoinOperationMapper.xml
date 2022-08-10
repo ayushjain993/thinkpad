@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.coin.system.mapper.FSysCoinOperationMapper">
+
+    <resultMap type="FSysCoinOperation" id="FSysCoinOperationResult">
+        <result property="fid"    column="fid"    />
+        <result property="fcoinid"    column="fcoinid"    />
+        <result property="famount"    column="famount"    />
+        <result property="ffees"    column="ffees"    />
+        <result property="ftype"    column="ftype"    />
+        <result property="fstatus"    column="fstatus"    />
+        <result property="fcreatetime"    column="fcreatetime"    />
+        <result property="fupdatetime"    column="fupdatetime"    />
+        <result property="ffromaddress"    column="ffromaddress"    />
+        <result property="ftoaddress"    column="ftoaddress"    />
+        <result property="txtime"    column="txtime"    />
+        <result property="txid"    column="txid"    />
+        <result property="fconfirmations"    column="fconfirmations"    />
+        <result property="fblocknumber"    column="fblocknumber"    />
+        <result property="fadminid"    column="fadminid"    />
+        <result property="version"    column="version"    />
+        <result property="fnonce"    column="fnonce"    />
+    </resultMap>
+
+    <sql id="selectFSysCoinOperationVo">
+        select fid, fcoinid, famount, ffees, ftype, fstatus, fcreatetime, fupdatetime, ffromaddress, ftoaddress, txtime, txid, fconfirmations, fblocknumber, fadminid, version, fnonce from f_sys_coin_operation
+    </sql>
+
+    <select id="selectFSysCoinOperationList" parameterType="FSysCoinOperation" resultMap="FSysCoinOperationResult">
+        <include refid="selectFSysCoinOperationVo"/>
+        <where>
+            <if test="fcoinid != null "> and fcoinid = #{fcoinid}</if>
+            <if test="ftype != null "> and ftype = #{ftype}</if>
+            <if test="fstatus != null "> and fstatus = #{fstatus}</if>
+        </where>
+    </select>
+
+    <select id="selectFSysCoinOperationByFid" parameterType="Long" resultMap="FSysCoinOperationResult">
+        <include refid="selectFSysCoinOperationVo"/>
+        where fid = #{fid}
+    </select>
+
+
+    <select id="selectFSysCoinOperationListByCoinId" parameterType="Integer" resultMap="FSysCoinOperationResult">
+        <include refid="selectFSysCoinOperationVo"/>
+        where fcoinid = #{fcoinid}
+    </select>
+
+    <insert id="insertFSysCoinOperation" parameterType="FSysCoinOperation" useGeneratedKeys="true" keyProperty="fid">
+        insert into f_sys_coin_operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fcoinid != null">fcoinid,</if>
+            <if test="famount != null">famount,</if>
+            <if test="ffees != null">ffees,</if>
+            <if test="ftype != null">ftype,</if>
+            <if test="fstatus != null">fstatus,</if>
+            <if test="fcreatetime != null">fcreatetime,</if>
+            <if test="fupdatetime != null">fupdatetime,</if>
+            <if test="ffromaddress != null">ffromaddress,</if>
+            <if test="ftoaddress != null">ftoaddress,</if>
+            <if test="txtime != null">txtime,</if>
+            <if test="txid != null">txid,</if>
+            <if test="fconfirmations != null">fconfirmations,</if>
+            <if test="fblocknumber != null">fblocknumber,</if>
+            <if test="fadminid != null">fadminid,</if>
+            <if test="version != null">version,</if>
+            <if test="fnonce != null">fnonce,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fcoinid != null">#{fcoinid},</if>
+            <if test="famount != null">#{famount},</if>
+            <if test="ffees != null">#{ffees},</if>
+            <if test="ftype != null">#{ftype},</if>
+            <if test="fstatus != null">#{fstatus},</if>
+            <if test="fcreatetime != null">#{fcreatetime},</if>
+            <if test="fupdatetime != null">#{fupdatetime},</if>
+            <if test="ffromaddress != null">#{ffromaddress},</if>
+            <if test="ftoaddress != null">#{ftoaddress},</if>
+            <if test="txtime != null">#{txtime},</if>
+            <if test="txid != null">#{txid},</if>
+            <if test="fconfirmations != null">#{fconfirmations},</if>
+            <if test="fblocknumber != null">#{fblocknumber},</if>
+            <if test="fadminid != null">#{fadminid},</if>
+            <if test="version != null">#{version},</if>
+            <if test="fnonce != null">#{fnonce},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFSysCoinOperation" parameterType="FSysCoinOperation">
+        update f_sys_coin_operation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fcoinid != null">fcoinid = #{fcoinid},</if>
+            <if test="famount != null">famount = #{famount},</if>
+            <if test="ffees != null">ffees = #{ffees},</if>
+            <if test="ftype != null">ftype = #{ftype},</if>
+            <if test="fstatus != null">fstatus = #{fstatus},</if>
+            <if test="fcreatetime != null">fcreatetime = #{fcreatetime},</if>
+            <if test="fupdatetime != null">fupdatetime = #{fupdatetime},</if>
+            <if test="ffromaddress != null">ffromaddress = #{ffromaddress},</if>
+            <if test="ftoaddress != null">ftoaddress = #{ftoaddress},</if>
+            <if test="txtime != null">txtime = #{txtime},</if>
+            <if test="txid != null">txid = #{txid},</if>
+            <if test="fconfirmations != null">fconfirmations = #{fconfirmations},</if>
+            <if test="fblocknumber != null">fblocknumber = #{fblocknumber},</if>
+            <if test="fadminid != null">fadminid = #{fadminid},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="fnonce != null">fnonce = #{fnonce},</if>
+        </trim>
+        where fid = #{fid}
+    </update>
+
+    <delete id="deleteFSysCoinOperationByFid" parameterType="Long">
+        delete from f_sys_coin_operation where fid = #{fid}
+    </delete>
+
+    <delete id="deleteFSysCoinOperationByFids" parameterType="String">
+        delete from f_sys_coin_operation where fid in
+        <foreach item="fid" collection="array" open="(" separator="," close=")">
+            #{fid}
+        </foreach>
+    </delete>
+</mapper>

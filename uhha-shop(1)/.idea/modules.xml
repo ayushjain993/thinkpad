@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-admin/uhha-admin.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-admin/uhha-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-coincore/uhha-coincore.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-coincore/uhha-coincore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-common/uhha-common.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-common/uhha-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-framework/uhha-framework.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-framework/uhha-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-generator/uhha-generator.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-generator/uhha-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-im/uhha-im.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-im/uhha-im.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-mall/uhha-mall.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-mall/uhha-mall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-quartz/uhha-quartz.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-quartz/uhha-quartz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/uhha-shop(1).iml" filepath="$PROJECT_DIR$/.idea/uhha-shop(1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-store/uhha-store.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-store/uhha-store.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-system/uhha-system.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-system/uhha-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uhha-shop/uhha-web/uhha-web.iml" filepath="$PROJECT_DIR$/uhha-shop/uhha-web/uhha-web.iml" />
+    </modules>
+  </component>
+</project>

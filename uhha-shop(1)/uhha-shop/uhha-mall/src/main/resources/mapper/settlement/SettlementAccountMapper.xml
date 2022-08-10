@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.settlement.mapper.SettlementAccountMapper">
+
+    <resultMap type="SettlementAccount" id="SettlementAccountResult">
+        <result property="id"    column="id"    />
+        <result property="accountCode"    column="account_code"    />
+        <result property="accountType"    column="account_type"    />
+        <result property="childType"    column="child_type"    />
+        <result property="accountName"    column="account_name"    />
+        <result property="associateId"    column="associate_id"    />
+        <result property="withdrawalRate"    column="withdrawal_rate"    />
+        <result property="settlementTime"    column="settlement_time"    />
+        <result property="settlementBeforeBalance"    column="settlement_before_balance"    />
+        <result property="settlementAfterBalance"    column="settlement_after_balance"    />
+        <result property="frozenBalance"    column="frozen_balance"    />
+        <result property="availableBalance"    column="available_balance"    />
+        <result property="settlementType"    column="settlement_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectSettlementAccountVo">
+        select id, account_code, account_type, child_type,account_name, associate_id, withdrawal_rate, settlement_time, settlement_before_balance, settlement_after_balance, frozen_balance, available_balance, settlement_type, create_by, create_time, del_flag from settlement_account
+    </sql>
+
+    <select id="selectSettlementAccountList" parameterType="SettlementAccount" resultMap="SettlementAccountResult">
+        <include refid="selectSettlementAccountVo"/>
+        <where>
+            <if test="accountCode != null  and accountCode != ''"> and account_code = #{accountCode}</if>
+            <if test="accountType != null  and accountType != ''"> and account_type = #{accountType}</if>
+            <if test="childType != null  and childType != ''"> and child_type = #{childType}</if>
+            <if test="accountName != null  and accountName != ''"> and account_name like concat('%', #{accountName}, '%')</if>
+            <if test="settlementType != null  and settlementType != ''"> and settlement_type = #{settlementType}</if>
+            <if test="associateId != null"> and associate_id = #{associateId}</if>
+        </where>
+    </select>
+
+    <select id="selectSettlementAccountById" parameterType="Long" resultMap="SettlementAccountResult">
+        <include refid="selectSettlementAccountVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSettlementAccount" parameterType="SettlementAccount" useGeneratedKeys="true" keyProperty="id">
+        insert into settlement_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountCode != null and accountCode != ''">account_code,</if>
+            <if test="accountType != null and accountType != ''">account_type,</if>
+            <if test="childType != null and childType != ''">child_type,</if>
+            <if test="accountName != null and accountName != ''">account_name,</if>
+            <if test="associateId != null">associate_id,</if>
+            <if test="withdrawalRate != null">withdrawal_rate,</if>
+            <if test="settlementTime != null">settlement_time,</if>
+            <if test="settlementBeforeBalance != null">settlement_before_balance,</if>
+            <if test="settlementAfterBalance != null">settlement_after_balance,</if>
+            <if test="frozenBalance != null">frozen_balance,</if>
+            <if test="availableBalance != null">available_balance,</if>
+            <if test="settlementType != null and settlementType != ''">settlement_type,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountCode != null and accountCode != ''">#{accountCode},</if>
+            <if test="accountType != null and accountType != ''">#{accountType},</if>
+            <if test="childType != null and childType != ''">#{childType},</if>
+            <if test="accountName != null and accountName != ''">#{accountName},</if>
+            <if test="associateId != null">#{associateId},</if>
+            <if test="withdrawalRate != null">#{withdrawalRate},</if>
+            <if test="settlementTime != null">#{settlementTime},</if>
+            <if test="settlementBeforeBalance != null">#{settlementBeforeBalance},</if>
+            <if test="settlementAfterBalance != null">#{settlementAfterBalance},</if>
+            <if test="frozenBalance != null">#{frozenBalance},</if>
+            <if test="availableBalance != null">#{availableBalance},</if>
+            <if test="settlementType != null and settlementType != ''">#{settlementType},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSettlementAccount" parameterType="SettlementAccount">
+        update settlement_account
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="accountCode != null and accountCode != ''">account_code = #{accountCode},</if>
+            <if test="accountType != null and accountType != ''">account_type = #{accountType},</if>
+            <if test="childType != null and childType != ''">child_type = #{childType},</if>
+            <if test="accountName != null and accountName != ''">account_name = #{accountName},</if>
+            <if test="associateId != null">associate_id = #{associateId},</if>
+            <if test="withdrawalRate != null">withdrawal_rate = #{withdrawalRate},</if>
+            <if test="settlementTime != null">settlement_time = #{settlementTime},</if>
+            <if test="settlementBeforeBalance != null">settlement_before_balance = #{settlementBeforeBalance},</if>
+            <if test="settlementAfterBalance != null">settlement_after_balance = #{settlementAfterBalance},</if>
+            <if test="frozenBalance != null">frozen_balance = #{frozenBalance},</if>
+            <if test="availableBalance != null">available_balance = #{availableBalance},</if>
+            <if test="settlementType != null and settlementType != ''">settlement_type = #{settlementType},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSettlementAccountById" parameterType="Long">
+        delete from settlement_account where id = #{id}
+    </delete>
+
+    <delete id="deleteSettlementAccountByIds" parameterType="String">
+        delete from settlement_account where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.store.mapper.TStoreInfoChangeHistoryMapper">
+    
+    <resultMap type="TStoreInfoChangeHistory" id="TStoreInfoChangeHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="storeId"    column="store_id"    />
+        <result property="eventName"    column="event_name"    />
+        <result property="eventContent"    column="event_content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+    </resultMap>
+
+    <sql id="selectTStoreInfoChangeHistoryVo">
+        select id, store_id, event_name, event_content, create_by, create_time from t_store_info_change_history
+    </sql>
+
+    <select id="selectTStoreInfoChangeHistoryList" parameterType="TStoreInfoChangeHistory" resultMap="TStoreInfoChangeHistoryResult">
+        <include refid="selectTStoreInfoChangeHistoryVo"/>
+        <where>  
+            <if test="storeId != null "> and store_id = #{storeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTStoreInfoChangeHistoryById" parameterType="Long" resultMap="TStoreInfoChangeHistoryResult">
+        <include refid="selectTStoreInfoChangeHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTStoreInfoChangeHistory" parameterType="TStoreInfoChangeHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into t_store_info_change_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">store_id,</if>
+            <if test="eventName != null">event_name,</if>
+            <if test="eventContent != null">event_content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeId != null">#{storeId},</if>
+            <if test="eventName != null">#{eventName},</if>
+            <if test="eventContent != null">#{eventContent},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTStoreInfoChangeHistory" parameterType="TStoreInfoChangeHistory">
+        update t_store_info_change_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeId != null">store_id = #{storeId},</if>
+            <if test="eventName != null">event_name = #{eventName},</if>
+            <if test="eventContent != null">event_content = #{eventContent},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTStoreInfoChangeHistoryById" parameterType="Long">
+        delete from t_store_info_change_history where id = #{id}
+    </delete>
+
+    <delete id="deleteTStoreInfoChangeHistoryByIds" parameterType="String">
+        delete from t_store_info_change_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

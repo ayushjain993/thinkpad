@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.setting.mapper.LsPlatformFeeSettingMapper">
+    
+    <resultMap type="LsPlatformFeeSetting" id="LsPlatformFeeSettingResult">
+        <result property="id"    column="id"    />
+        <result property="columnName"    column="column_name"    />
+        <result property="columnValue"    column="column_value"    />
+    </resultMap>
+
+    <select id="queryPlatformFeeSet" resultMap="LsPlatformFeeSettingResult">
+        SELECT id,`column_name`,column_value FROM ls_platform_fee_setting
+    </select>
+
+    <delete id="deletePlatformFeeSet" parameterType="java.lang.String">
+        DELETE  FROM ls_platform_fee_setting
+    </delete>
+
+    <insert id="addPlatformFeeSet" parameterType="LsPlatformFeeSetting">
+        INSERT INTO ls_platform_fee_setting (`column_name`,column_value) VALUES
+        <foreach collection="list" index="index" item="set" separator=",">
+            (#{set.columnName},#{set.columnValue}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.shortvideo.mapper.ShortVideoWatchRecordMapper">
+    
+    <resultMap type="ShortVideoWatchRecord" id="ShortVideoWatchRecordResult">
+        <result property="id"    column="id"    />
+        <result property="producerUid"    column="producer_uid"    />
+        <result property="uid"    column="uid"    />
+        <result property="videoId"    column="video_id"    />
+        <result property="videoTags"    column="video_tags"    />
+        <result property="hours"    column="hours"    />
+        <result property="minutes"    column="minutes"    />
+        <result property="seconds"    column="seconds"    />
+        <result property="times"    column="times"    />
+        <result property="watchStartTime"    column="watch_start_time"    />
+        <result property="watchEndTime"    column="watch_end_time"    />
+        <result property="envLocation"    column="env_location"    />
+        <result property="envNetwork"    column="env_network"    />
+        <result property="personPhoneModel"    column="person_phone_model"    />
+        <result property="personOccuption"    column="person_occuption"    />
+        <result property="personGender"    column="person_gender"    />
+        <result property="personInterest"    column="person_interest"    />
+        <result property="personSource"    column="person_source"    />
+    </resultMap>
+
+    <sql id="selectShortVideoWatchRecordVo">
+        select id, producer_uid, uid, video_id, video_tags, hours, minutes, seconds, times, watch_start_time, watch_end_time, env_location, env_network, person_phone_model, person_occuption, person_gender, person_interest, person_source from short_video_watch_record
+    </sql>
+
+    <select id="selectShortVideoWatchRecordList" parameterType="ShortVideoWatchRecord" resultMap="ShortVideoWatchRecordResult">
+        <include refid="selectShortVideoWatchRecordVo"/>
+        <where>  
+            <if test="producerUid != null "> and producer_uid = #{producerUid}</if>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="videoId != null  and videoId != ''"> and video_id = #{videoId}</if>
+            <if test="videoTags != null  and videoTags != ''"> and video_tags = #{videoTags}</if>
+            <if test="hours != null "> and hours = #{hours}</if>
+            <if test="minutes != null "> and minutes = #{minutes}</if>
+            <if test="seconds != null "> and seconds = #{seconds}</if>
+            <if test="times != null "> and times = #{times}</if>
+            <if test="watchStartTime != null "> and watch_start_time = #{watchStartTime}</if>
+            <if test="watchEndTime != null "> and watch_end_time = #{watchEndTime}</if>
+            <if test="envLocation != null  and envLocation != ''"> and env_location = #{envLocation}</if>
+            <if test="envNetwork != null  and envNetwork != ''"> and env_network = #{envNetwork}</if>
+            <if test="personPhoneModel != null  and personPhoneModel != ''"> and person_phone_model = #{personPhoneModel}</if>
+            <if test="personOccuption != null  and personOccuption != ''"> and person_occuption = #{personOccuption}</if>
+            <if test="personGender != null  and personGender != ''"> and person_gender = #{personGender}</if>
+            <if test="personInterest != null  and personInterest != ''"> and person_interest = #{personInterest}</if>
+            <if test="personSource != null  and personSource != ''"> and person_source = #{personSource}</if>
+        </where>
+    </select>
+    
+    <select id="selectShortVideoWatchRecordById" parameterType="Long" resultMap="ShortVideoWatchRecordResult">
+        <include refid="selectShortVideoWatchRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertShortVideoWatchRecord" parameterType="ShortVideoWatchRecord">
+        insert into short_video_watch_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="producerUid != null">producer_uid,</if>
+            <if test="uid != null">uid,</if>
+            <if test="videoId != null and videoId != ''">video_id,</if>
+            <if test="videoTags != null">video_tags,</if>
+            <if test="hours != null">hours,</if>
+            <if test="minutes != null">minutes,</if>
+            <if test="seconds != null">seconds,</if>
+            <if test="times != null">times,</if>
+            <if test="watchStartTime != null">watch_start_time,</if>
+            <if test="watchEndTime != null">watch_end_time,</if>
+            <if test="envLocation != null">env_location,</if>
+            <if test="envNetwork != null">env_network,</if>
+            <if test="personPhoneModel != null">person_phone_model,</if>
+            <if test="personOccuption != null">person_occuption,</if>
+            <if test="personGender != null">person_gender,</if>
+            <if test="personInterest != null">person_interest,</if>
+            <if test="personSource != null">person_source,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="producerUid != null">#{producerUid},</if>
+            <if test="uid != null">#{uid},</if>
+            <if test="videoId != null and videoId != ''">#{videoId},</if>
+            <if test="videoTags != null">#{videoTags},</if>
+            <if test="hours != null">#{hours},</if>
+            <if test="minutes != null">#{minutes},</if>
+            <if test="seconds != null">#{seconds},</if>
+            <if test="times != null">#{times},</if>
+            <if test="watchStartTime != null">#{watchStartTime},</if>
+            <if test="watchEndTime != null">#{watchEndTime},</if>
+            <if test="envLocation != null">#{envLocation},</if>
+            <if test="envNetwork != null">#{envNetwork},</if>
+            <if test="personPhoneModel != null">#{personPhoneModel},</if>
+            <if test="personOccuption != null">#{personOccuption},</if>
+            <if test="personGender != null">#{personGender},</if>
+            <if test="personInterest != null">#{personInterest},</if>
+            <if test="personSource != null">#{personSource},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShortVideoWatchRecord" parameterType="ShortVideoWatchRecord">
+        update short_video_watch_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="producerUid != null">producer_uid = #{producerUid},</if>
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="videoId != null and videoId != ''">video_id = #{videoId},</if>
+            <if test="videoTags != null">video_tags = #{videoTags},</if>
+            <if test="hours != null">hours = #{hours},</if>
+            <if test="minutes != null">minutes = #{minutes},</if>
+            <if test="seconds != null">seconds = #{seconds},</if>
+            <if test="times != null">times = #{times},</if>
+            <if test="watchStartTime != null">watch_start_time = #{watchStartTime},</if>
+            <if test="watchEndTime != null">watch_end_time = #{watchEndTime},</if>
+            <if test="envLocation != null">env_location = #{envLocation},</if>
+            <if test="envNetwork != null">env_network = #{envNetwork},</if>
+            <if test="personPhoneModel != null">person_phone_model = #{personPhoneModel},</if>
+            <if test="personOccuption != null">person_occuption = #{personOccuption},</if>
+            <if test="personGender != null">person_gender = #{personGender},</if>
+            <if test="personInterest != null">person_interest = #{personInterest},</if>
+            <if test="personSource != null">person_source = #{personSource},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShortVideoWatchRecordById" parameterType="Long">
+        delete from short_video_watch_record where id = #{id}
+    </delete>
+
+    <delete id="deleteShortVideoWatchRecordByIds" parameterType="String">
+        delete from short_video_watch_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

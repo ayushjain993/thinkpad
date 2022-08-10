@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.uhha.coin.user.mapper.FLogCountlimitMapper" >
+  
+  <sql id="limitColumn">fid, fip, fcreatetime, fcount, ftype, version</sql>
+  
+  <select id="selectByLimit" resultType="io.uhha.coin.user.domain.FLogCountlimit">
+   select fid, fip, fcreatetime, fcount, ftype, version
+   from f_log_countlimit
+   where fip = #{fip} and ftype = #{ftype}
+  </select>
+  
+  <update id="updateByLimit" parameterType="io.uhha.coin.user.domain.FLogCountlimit" >
+    update f_log_countlimit
+    set  
+    	fcount = fcount + 1, 
+    	version = version + 1, 
+    	fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP}
+    where 
+    	fid = #{fid,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
+  </update> 
+
+  <!-- Base -->
+
+  <insert id="insert" parameterType="io.uhha.coin.user.domain.FLogCountlimit" keyProperty="fid">
+    insert into f_log_countlimit (
+    	fip, 
+    	fcreatetime, 
+      	fcount, 
+      	ftype, 
+      	version
+    ) values (
+    	#{fip,jdbcType=VARCHAR}, 
+    	#{fcreatetime,jdbcType=TIMESTAMP}, 
+        #{fcount,jdbcType=INTEGER}, 
+        #{ftype,jdbcType=INTEGER}, 
+        #{version,jdbcType=INTEGER} )
+  </insert>
+
+  <delete id="deleteByIp">
+    delete from f_log_countlimit
+    where fip = #{fip,jdbcType=VARCHAR} and ftype = #{ftype,jdbcType=INTEGER}
+  </delete>
+
+
+  <select id="selectCountByfuid" resultType="io.uhha.coin.user.domain.FUserLoginlimit">
+   select fid, fuid, fip, fcreatetime, fcount, version
+   from f_user_loginlimit
+   where fuid = #{fuid,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByFuid">
+    delete from f_user_loginlimit
+    where fuid = #{fuid,jdbcType=BIGINT}
+  </delete>
+
+   <update id="updateByFuid" parameterType="io.uhha.coin.user.domain.FUserLoginlimit" >
+    update f_user_loginlimit
+    set
+    	fcount = fcount + 1,
+    	version = version + 1,
+    	fcreatetime = #{fcreatetime,jdbcType=TIMESTAMP}
+    where
+    	fuid = #{fuid,jdbcType=BIGINT}
+  </update>
+
+    <insert id="insertByUser" parameterType="io.uhha.coin.user.domain.FUserLoginlimit" keyProperty="fid">
+    insert into f_user_loginlimit (
+    	fip,
+    	fuid,
+    	fcreatetime,
+      	fcount,
+      	version
+    ) values (
+    	#{fip,jdbcType=VARCHAR},
+    	#{fuid,jdbcType=BIGINT},
+    	#{fcreatetime,jdbcType=TIMESTAMP},
+        #{fcount,jdbcType=INTEGER},
+        #{version,jdbcType=INTEGER} )
+  </insert>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.uhha.coin.capital.mapper.QVirtualCapitalSmallMapper">
+
+	<select id="countByUniquenumber" resultType="java.lang.Integer">
+		SELECT COUNT(qid)
+		FROM q_virtual_capital_small
+		WHERE quniquenumber=#{quniquenumber}
+	</select>
+
+	<insert id="insert" parameterType="io.uhha.coin.capital.domain.QVirtualCapitalSmall"
+		keyProperty="qid">
+		INSERT INTO q_virtual_capital_small(
+		qcoinid,
+		qamount,
+		qtype,
+		qcreatetime,
+		tx_time,
+		qrechargeaddress,
+		quniquenumber,
+		qsource,
+		qnonce,
+		qplatform
+		)VALUES(
+		#{qcoinid,jdbcType=INTEGER},
+		#{qamount,jdbcType=DECIMAL},
+		#{qtype,jdbcType=INTEGER},
+		#{qcreatetime,jdbcType=TIMESTAMP},
+		#{txTime,jdbcType=TIMESTAMP},
+		#{qrechargeaddress,jdbcType=VARCHAR},
+		#{quniquenumber,jdbcType=VARCHAR},
+		#{qsource,jdbcType=INTEGER},
+		#{qnonce,jdbcType=INTEGER},
+		#{qplatform,jdbcType=INTEGER}
+		)
+	</insert>
+</mapper>
